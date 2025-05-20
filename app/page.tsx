@@ -6,18 +6,21 @@ export default function Home() {
   return (
     <div className="min-h-screen bg-gradient-to-br from-purple-50 to-pink-50">
       {/* Header */}
-      <header className="container mx-auto px-4 py-6 flex justify-between items-center">
+      <header className="w-full px-4 py-6 flex justify-between items-center bg-white/80 backdrop-blur-sm shadow-sm">
         <div className="flex items-center gap-2">
           <Image src="/logo.svg" alt="DeepLove Logo" width={32} height={32} />
           <span className="font-bold text-xl">DeepLove AI</span>
         </div>
-        <Button variant="default" className="bg-black text-white rounded-full text-sm px-4">
+        <Link
+          href="#download-section"
+          className="bg-black text-white rounded-full text-sm px-4 py-2 transition hover:bg-gray-900"
+        >
           Download App
-        </Button>
+        </Link>
       </header>
 
-      {/* Hero Section */}
-      <section className="container mx-auto px-4 py-12 text-center relative">
+      {/* Download Section */}
+      <section id="download-section" className="container mx-auto px-4 py-12 text-center relative">
         <p className="text-gray-600 mb-2">Make Your Dreams Come True</p>
         <h1 className="text-4xl md:text-5xl font-bold mb-4 max-w-2xl mx-auto">
           Chat with Your Favorite Character Every Day!

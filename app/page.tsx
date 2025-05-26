@@ -107,7 +107,7 @@ export default function Home() {
               className="mx-auto mt-4"
             />
           </div>
-          <div className="bg-gray-200 rounded-3xl p-6 relative overflow-hidden">
+          <div className="bg-purple-100 rounded-3xl p-6 relative overflow-hidden">
             <div className="w-8 h-8 bg-black rounded-full flex items-center justify-center text-white text-sm mb-4">
               3
             </div>
@@ -309,8 +309,13 @@ export default function Home() {
               <h3 className="font-semibold text-gray-900 mb-4">Contact</h3>
               <ul className="space-y-2 text-gray-500 text-sm">
                 <li>
-                  <a href="mailto:dxhong1230@gmail.com" className="hover:text-purple-600 transition-colors">
-                    dxhong1230@gmail.com
+                  <a href="mailto:deridderkoehn@gmail.com" className="hover:text-purple-600 transition-colors">
+                    deridderkoehn@gmail.com
+                  </a>
+                </li>
+                <li>
+                  <a href="tel:+85255603047" className="hover:text-purple-600 transition-colors">
+                    Tel: +85255603047
                   </a>
                 </li>
               </ul>

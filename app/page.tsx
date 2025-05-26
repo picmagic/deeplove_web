@@ -46,10 +46,10 @@ export default function Home() {
             </div>
           </Link>
           <Link
-            href="https://play.google.com/store/apps/details?id=xxxxxxxx"
+            href="https://play.google.com/store/apps/details?id=com.deeplove.ai"
             target="_blank"
             rel="noopener noreferrer"
-            className="flex items-center gap-3 px-5 py-2 rounded-full bg-black hover:bg-gray-900 transition text-white shadow-lg"
+            className="flex items-center gap-3 px-5 py-2 rounded-full bg-gray-500 transition text-white shadow-lg"
             aria-label="Get it on Google Play"
           >
             <svg width="28" height="28" viewBox="0 0 24 24" className="mr-2">
@@ -61,7 +61,7 @@ export default function Home() {
               </g>
             </svg>
             <div className="text-left">
-              <div className="text-xs">Get it on</div>
+              <div className="text-xs">Coming Soon</div>
               <div className="font-semibold text-base leading-tight">Google Play</div>
             </div>
           </Link>
@@ -69,9 +69,9 @@ export default function Home() {
 
 
         {/* Phone Mockup */}
-        <div className="relative max-w-xs mx-auto mb-12">
+        {/* <div className="relative max-w-xs mx-auto mb-12">
           <Image src="/characters.png" alt="LuxiQue App" width={300} height={600} className="mx-auto" />
-        </div>
+        </div> */}
       </section>
 
       {/* Features Section */}
@@ -87,7 +87,7 @@ export default function Home() {
             </div>
             <h3 className="text-xl font-bold mb-4">Chat with AI Character</h3>
             <Image
-              src="/chat.png"
+              src="/characters.jpg"
               alt="Chat with AI Character"
               width={200}
               height={300}
@@ -100,7 +100,7 @@ export default function Home() {
             </div>
             <h3 className="text-xl font-bold mb-4">Gradual increase in affection</h3>
             <Image
-              src="/affection.png"
+              src="/chat.jpg"
               alt="Gradual increase in affection"
               width={200}
               height={300}
@@ -113,7 +113,7 @@ export default function Home() {
             </div>
             <h3 className="text-xl font-bold mb-4">Record your memories</h3>
             <Image
-              src="/memory.png"
+              src="/memory.jpg"
               alt="Record your memories"
               width={200}
               height={300}

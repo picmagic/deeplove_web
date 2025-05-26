@@ -120,6 +120,84 @@ export default function Home() {
               className="mx-auto mt-4"
             />
           </div>
+          <div className="bg-purple-100 rounded-3xl p-6 relative overflow-hidden">
+            <div className="w-8 h-8 bg-black rounded-full flex items-center justify-center text-white text-sm mb-4">
+              4
+            </div>
+            <h3 className="text-xl font-bold mb-4">Text-to-Image Character Avatar Creation</h3>
+            <Image
+              src="/feature4.jpg"
+              alt="Text-to-Image Character Avatar Creation"
+              width={200}
+              height={300}
+              className="mx-auto mt-4"
+            />
+          </div>
+          <div className="bg-purple-100 rounded-3xl p-6 relative overflow-hidden">
+            <div className="w-8 h-8 bg-black rounded-full flex items-center justify-center text-white text-sm mb-4">
+              5
+            </div>
+            <h3 className="text-xl font-bold mb-4">Rich Character Backstory & Customization</h3>
+            <Image
+              src="/feature5.jpg"
+              alt="Rich Character Backstory & Customization"
+              width={200}
+              height={300}
+              className="mx-auto mt-4"
+            />
+          </div>
+          <div className="bg-purple-100 rounded-3xl p-6 relative overflow-hidden">
+            <div className="w-8 h-8 bg-black rounded-full flex items-center justify-center text-white text-sm mb-4">
+              6
+            </div>
+            <h3 className="text-xl font-bold mb-4">Real-Time Voice Chat</h3>
+            <Image
+              src="/feature6.jpg"
+              alt="Real-Time Voice Chat"
+              width={200}
+              height={300}
+              className="mx-auto mt-4"
+            />
+          </div>
+          <div className="bg-purple-100 rounded-3xl p-6 relative overflow-hidden">
+            <div className="w-8 h-8 bg-black rounded-full flex items-center justify-center text-white text-sm mb-4">
+              7
+            </div>
+            <h3 className="text-xl font-bold mb-4">Build Intimate Connections with Characters</h3>
+            <Image
+              src="/feature7.jpg"
+              alt="Build Intimate Connections with Characters"
+              width={200}
+              height={300}
+              className="mx-auto mt-4"
+            />
+          </div>
+          <div className="bg-purple-100 rounded-3xl p-6 relative overflow-hidden">
+            <div className="w-8 h-8 bg-black rounded-full flex items-center justify-center text-white text-sm mb-4">
+              8
+            </div>
+            <h3 className="text-xl font-bold mb-4">Personalized Voices & Custom Voice Creation</h3>
+            <Image
+              src="/feature8.jpg"
+              alt="Personalized Voices & Custom Voice Creation"
+              width={200}
+              height={300}
+              className="mx-auto mt-4"
+            />
+          </div>
+          <div className="bg-purple-100 rounded-3xl p-6 relative overflow-hidden">
+            <div className="w-8 h-8 bg-black rounded-full flex items-center justify-center text-white text-sm mb-4">
+              9
+            </div>
+            <h3 className="text-xl font-bold mb-4">Variety of Dialogue Mode Options</h3>
+            <Image
+              src="/feature9.jpg"
+              alt="Variety of Dialogue Mode Options"
+              width={200}
+              height={300}
+              className="mx-auto mt-4"
+            />
+          </div>
         </div>
       </section>
 

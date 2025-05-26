@@ -146,7 +146,7 @@ export default function TermsOfUse() {
 				<h2>XVII. CONTACT INFORMATION</h2>
 				<p>
 					For support or questions about this Agreement, please contact us at:{' '}
-					<a href='mailto:dxhong1230@gmail.com'>dxhong1230@gmail.com</a>
+					<a href='mailto:deridderkoehn@gmail.com'>deridderkoehn@gmail.com</a>
 				</p>
 			</section>
 		</div>

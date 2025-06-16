@@ -49,7 +49,7 @@ export default function Home() {
             href="https://play.google.com/store/apps/details?id=com.deeplove.ai"
             target="_blank"
             rel="noopener noreferrer"
-            className="flex items-center gap-3 px-5 py-2 rounded-full bg-gray-500 transition text-white shadow-lg"
+            className="flex items-center gap-3 px-5 py-2 rounded-full bg-black transition text-white shadow-lg"
             aria-label="Get it on Google Play"
           >
             <svg width="28" height="28" viewBox="0 0 24 24" className="mr-2">
@@ -61,7 +61,7 @@ export default function Home() {
               </g>
             </svg>
             <div className="text-left">
-              <div className="text-xs">Coming Soon</div>
+              <div className="text-xs">Download on the</div>
               <div className="font-semibold text-base leading-tight">Google Play</div>
             </div>
           </Link>

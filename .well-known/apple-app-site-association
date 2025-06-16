@@ -1,0 +1,19 @@
+{
+    "applinks": {
+        "apps": [],
+        "details": [
+            {
+                "appID": "3LCH3UV9KC.com.tester3.software",
+                "paths": [
+                    "/character/*"
+                ]
+            },
+            {
+                "appID": "LNFMMNHTWS.com.soulmateapp.net",
+                "paths": [
+                    "/character/*"
+                ]
+            }
+        ]
+    }
+}

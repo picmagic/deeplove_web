@@ -2,7 +2,7 @@
 import React, { useEffect, useState } from "react";
 import { useParams, useRouter } from "next/navigation";
 import { apiClient } from "@/lib/utils";
-import { Button } from "@/components/ui/button";
+
 
 // 简单 i18n hook
 const getLang = () => {
@@ -149,12 +149,14 @@ const CharacterDetailPage = () => {
             </div>
             {/* 底部按钮 */}
             <div className="fixed bottom-0 left-0 w-full bg-white border-t flex justify-center py-4 z-10">
-                <Button
-                    onClick={() => window.open(window.location.href, '_blank')}
-                    className="w-11/12 max-w-md h-12 text-base font-bold bg-purple-600 hover:bg-purple-700 text-white rounded-full shadow-lg"
+                <a
+                    href={typeof window !== 'undefined' ? window.location.href : '#'}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="w-11/12 max-w-md h-12 text-base font-bold bg-purple-600 hover:bg-purple-700 text-white rounded-full shadow-lg flex items-center justify-center no-underline"
                 >
                     {t("open_app_chat")}
-                </Button>
+                </a>
             </div>
         </div>
     );

@@ -115,14 +115,16 @@ const CharacterDetailPage = () => {
             <div className="flex flex-col items-start mt-4 px-4">
                 <div className="flex items-center justify-between w-full">
                     <div className="text-xl font-semibold">{data.name}</div>
-                    <div className="flex gap-4 text-xs text-gray-400">
-                        <span>{t("chat_user_count")} {data.totalChatUserCount}</span>
-                        <span>{t("chat_count")} {data.totalChatMessageCount}</span>
+                    <div className="flex gap-4 text-xs">
+                        <span className="text-gray-400">{t("chat_user_count")}</span>
+                        <span className="text-black">{data.totalChatUserCount}</span>
+                        <span className="text-gray-400">{t("chat_count")}</span>
+                        <span className="text-black">{data.totalChatMessageCount}</span>
                     </div>
                 </div>
                 <div className="text-sm text-gray-500 mt-1">{data.age} | {data.occupation}</div>
                 {/* 标签 */}
-                <div className="flex flex-wrap gap-2 justify-center mt-3">
+                <div className="flex flex-wrap gap-2 justify-start mt-3">
                     {allTags.map((tag, i) => (
                         <span key={i} className="text-xs text-purple-600 bg-purple-100 rounded px-2 py-0.5">#{tag}</span>
                     ))}

@@ -163,12 +163,20 @@ const CharacterDetailPage = () => {
                     rel="noopener noreferrer"
                     className="w-11/12 max-w-md h-12 text-base font-bold bg-purple-600 hover:bg-purple-700 text-white rounded-full shadow-lg flex items-center justify-center no-underline"
                     onClick={() => {
+                        let timer;
                         window.location.href = `deeplove://role?role=${params?.slug}`;
-                        setTimeout(() => {
+                        timer = setTimeout(() => {
                             if (!document.hidden) {
                                 window.location.href = "https://apps.apple.com/app/id6741785278";
                             }
-                        }, 1500);
+                        }, 3000);
+
+                        document.addEventListener('visibilitychange', function () {
+                            if (document.hidden) {
+                                // 用户切走了（可能打开了 App）
+                                clearTimeout(timer); // 正确传入定时器 ID
+                            }
+                        });
                     }}
                 >
                     {t("open_app_chat")}

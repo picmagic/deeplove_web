@@ -160,10 +160,16 @@ const CharacterDetailPage = () => {
                     {t("open_app_chat")}
                 </a> */}
                 <a
-                    href={`deeplove://role?role=${params?.slug}`}
-                    target="_blank"
                     rel="noopener noreferrer"
                     className="w-11/12 max-w-md h-12 text-base font-bold bg-purple-600 hover:bg-purple-700 text-white rounded-full shadow-lg flex items-center justify-center no-underline"
+                    onClick={() => {
+                        window.location.href = `deeplove://role?role=${params?.slug}`;
+                        setTimeout(() => {
+                            if (!document.hidden) {
+                                window.location.href = "https://apps.apple.com/app/id6741785278";
+                            }
+                        }, 1500);
+                    }}
                 >
                     {t("open_app_chat")}
                 </a>

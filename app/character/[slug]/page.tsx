@@ -100,8 +100,8 @@ const CharacterDetailPage = () => {
                 <button
                     aria-label={t("back")}
                     tabIndex={0}
-                    onClick={() => router.back()}
-                    onKeyDown={e => (e.key === "Enter" || e.key === " ") && router.back()}
+                    onClick={() => router.push("/")}
+                    onKeyDown={e => (e.key === "Enter" || e.key === " ") && router.push("/")}
                     className="absolute top-4 left-4 w-8 h-8 bg-black/50 rounded-full flex items-center justify-center"
                 >
                     <img

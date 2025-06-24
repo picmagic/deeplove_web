@@ -100,8 +100,8 @@ const CharacterDetailPage = () => {
                 <button
                     aria-label={t("back")}
                     tabIndex={0}
-                    onClick={() => router.back()}
-                    onKeyDown={e => (e.key === "Enter" || e.key === " ") && router.back()}
+                    onClick={() => router.push("/")}
+                    onKeyDown={e => (e.key === "Enter" || e.key === " ") && router.push("/")}
                     className="absolute top-4 left-4 w-8 h-8 bg-black/50 rounded-full flex items-center justify-center"
                 >
                     <img
@@ -164,7 +164,7 @@ const CharacterDetailPage = () => {
                     className="w-11/12 max-w-md h-12 text-base font-bold bg-purple-600 hover:bg-purple-700 text-white rounded-full shadow-lg flex items-center justify-center no-underline"
                     onClick={() => {
                         let timer;
-                        window.location.href = `deeplove://role?role=${params?.slug}`;
+                        window.location.href = `https://deeplove.onelink.me/prQF?af_xp=social&pid=creator&af_dp=${encodeURIComponent(`deeplove://`)}&deep_link_value=${encodeURIComponent(`deeplove://role?role=${params?.slug}`)}&source=h5`;
                         timer = setTimeout(() => {
                             if (!document.hidden) {
                                 window.location.href = "https://apps.apple.com/app/id6741785278";

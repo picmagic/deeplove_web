@@ -48,7 +48,7 @@ const getDeviceId = () => {
 const getDeviceName = () => encodeURIComponent(navigator.userAgent);
 
 const getBaseUrl = () => {
-  return 'https://test.deeploveai.net/6svHCeo8VX';
+  return process.env.NEXT_PUBLIC_API_BASE_URL;
 };
 
 const accesskey = '6svHCeo8VX'; // TODO: 替换为实际 key
@@ -74,7 +74,7 @@ export const getCommonParams = () => {
 };
 
 export const apiClient = axios.create({
-  baseURL: getBaseUrl(),
+  baseURL: getBaseUrl() + '/accesskey=' + accesskey,
   headers: {
     'Content-Type': 'application/json',
     'YY-Basic-Params': JSON.stringify(getCommonParams()),

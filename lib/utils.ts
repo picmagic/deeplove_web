@@ -74,7 +74,7 @@ export const getCommonParams = () => {
 };
 
 export const apiClient = axios.create({
-  baseURL: getBaseUrl() + '/accesskey=' + accesskey,
+  baseURL: `${getBaseUrl()}/${accesskey}`,
   headers: {
     'Content-Type': 'application/json',
     'YY-Basic-Params': JSON.stringify(getCommonParams()),

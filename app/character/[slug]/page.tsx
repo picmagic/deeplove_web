@@ -164,7 +164,7 @@ const CharacterDetailPage = () => {
                     className="w-11/12 max-w-md h-12 text-base font-bold bg-purple-600 hover:bg-purple-700 text-white rounded-full shadow-lg flex items-center justify-center no-underline"
                     onClick={() => {
                         let timer;
-                        window.location.href = `https://deeplove.onelink.me/prQF?af_xp=social&pid=creator&af_dp=${encodeURIComponent(`deeplove://`)}&deep_link_value=${encodeURIComponent(`deeplove://role?role=${params?.slug}`)}&source=h5`;
+                        window.location.href = `https://deeplove.onelink.me/prQF?af_xp=social&pid=creator&af_dp=${encodeURIComponent(`deeplove://`)}&deep_link_value=${encodeURIComponent(`deeplove://role?role=${params?.slug}&source=h5`)}`;
                         timer = setTimeout(() => {
                             if (!document.hidden) {
                                 window.location.href = "https://apps.apple.com/app/id6741785278";

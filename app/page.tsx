@@ -375,10 +375,15 @@ export default function Home() {
             <div>
               <h3 className="font-semibold text-gray-900 mb-4">Company</h3>
               <ul className="space-y-2 text-gray-500 text-sm">
-                <li>Onesoft Technology Limited</li>
-                <li>RM DO7,8/F KAI TAK FTY BLDG</li>
-                <li>NO 99 KING FUK ST</li>
-                <li>SAN PO KONG, HONG KONG</li>
+                <li className="font-medium">Hong Kong:</li>
+                <li className="font-semibold">Onesoft Technology Limited</li>
+                <li className="font-semibold">RM DO7,8/F KAI TAK FTY BLDG</li>
+                <li className="font-semibold">NO 99 KING FUK ST</li>
+                <li className="font-semibold">SAN PO KONG, HONG KONG</li>
+                <li className="mt-3 font-medium">United States:</li>
+                <li className="font-semibold">FutureFocus Tech Inc.</li>
+                <li className="font-semibold">8 The Green, Ste A</li>
+                <li className="font-semibold">Dover DE 19901</li>
               </ul>
             </div>
 

@@ -218,7 +218,7 @@ export default function PrivacyPolicy() {
 				<h2>IX. Contact Us</h2>
 				<p>
 					For privacy policy questions, please contact us at:{' '}
-					<a href='mailto:deridderkoehn@gmail.com'>deridderkoehn@gmail.com</a>
+					<a href='mailto:support@deeploveai.net'>support@deeploveai.net</a>
 				</p>
 			</section>
 		</div>

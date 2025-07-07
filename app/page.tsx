@@ -392,8 +392,8 @@ export default function Home() {
               <h3 className="font-semibold text-gray-900 mb-4">Contact</h3>
               <ul className="space-y-2 text-gray-500 text-sm">
                 <li>
-                  <a href="mailto:deridderkoehn@gmail.com" className="hover:text-purple-600 transition-colors">
-                    deridderkoehn@gmail.com
+                  <a href="mailto:support@deeploveai.net" className="hover:text-purple-600 transition-colors">
+                    support@deeploveai.net
                   </a>
                 </li>
                 <li>

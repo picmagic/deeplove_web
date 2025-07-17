@@ -24,7 +24,7 @@ const ActivityPage = () => {
         <div className="min-h-screen bg-white relative">
             <div className="w-full pb-24">
                 <Image
-                    src="https://d355fm4icfleo1.cloudfront.net/public/6svHCeo8VX/image/e1329cdc1a224b7e907593adc8d92398.jpeg"
+                    src="https://d355fm4icfleo1.cloudfront.net/public/6svHCeo8VX/image/d7c6e5808dd04ff1a41d92d06b014384.jpeg"
                     alt="活动图片"
                     width={1200}
                     height={2400}

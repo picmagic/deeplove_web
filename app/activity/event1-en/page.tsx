@@ -6,7 +6,7 @@ export const metadata: Metadata = {
 }
 
 const EventImageOnlyPage = () => {
-    const imageUrl = 'https://d355fm4icfleo1.cloudfront.net/public/6svHCeo8VX/image/66fbc5341eec4b01afa71630b829995d.png'
+    const imageUrl = 'https://d355fm4icfleo1.cloudfront.net/public/6svHCeo8VX/image/c81f856984a84794824792b589323768.png'
 
     return (
         <div className="min-h-screen bg-white flex items-center justify-center">

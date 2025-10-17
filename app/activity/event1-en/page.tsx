@@ -2,11 +2,11 @@ import type { Metadata } from 'next'
 import Image from 'next/image'
 
 export const metadata: Metadata = {
-    title: '活動',
+    title: 'Event',
 }
 
 const EventImageOnlyPage = () => {
-    const imageUrl = 'https://d355fm4icfleo1.cloudfront.net/public/6svHCeo8VX/image/089cb3f32d8d48cc869bc0127ed9a54a.png'
+    const imageUrl = 'https://d355fm4icfleo1.cloudfront.net/public/6svHCeo8VX/image/66fbc5341eec4b01afa71630b829995d.png'
 
     return (
         <div className="min-h-screen bg-white flex items-center justify-center">

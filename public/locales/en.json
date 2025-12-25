@@ -6,5 +6,8 @@
     "opening": "Opening",
     "character_desc": "Character Description",
     "behavior_habit": "Behavior Habit",
-    "open_app_chat": "Open APP and Chat"
+    "open_app_chat": "Open APP and Chat",
+    "explore": "Explore",
+    "recommend": "Recommend",
+    "group_chat": "Group Chat"
 }

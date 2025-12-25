@@ -27,8 +27,8 @@ const getDeviceId = () => {
     if (typeof window === "undefined") return "";
     let deviceId = localStorage.getItem("deviceId");
     if (!deviceId) {
-        deviceId = uuidv4();
-        localStorage.setItem("deviceId", deviceId);
+        deviceId = uuidv4() || "";
+        localStorage.setItem("deviceId", deviceId || "");
     }
     return deviceId;
 };

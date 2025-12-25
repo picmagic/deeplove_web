@@ -51,16 +51,31 @@ const loadLocale = async (lang: string): Promise<Record<string, string>> => {
 };
 
 // Parse tags helper
-const parseTags = (tags: string): string[] => {
+const parseTags = (tags: any): string[] => {
     if (!tags) return [];
+
+    // 如果是对象数组 [{id, name}, ...]，提取 name
+    if (Array.isArray(tags)) {
+        return tags
+            .map(tag => (typeof tag === 'object' && tag?.name) ? tag.name : tag)
+            .filter(Boolean);
+    }
+
+    // 如果不是字符串，返回空数组
+    if (typeof tags !== 'string') return [];
+
     try {
+        // 可能是 json 字符串
         const arr = JSON.parse(tags);
-        if (Array.isArray(arr)) return arr;
+        if (Array.isArray(arr)) {
+            return arr
+                .map(tag => (typeof tag === 'object' && tag?.name) ? tag.name : tag)
+                .filter(Boolean);
+        }
     } catch { }
-    return tags
-        .split(/[,#]/)
-        .map((t) => t.trim())
-        .filter(Boolean);
+
+    // 普通逗号分隔
+    return tags.split(/[,#]/).map(t => t.trim()).filter(Boolean);
 };
 
 // Strip content between * * or （ ） from text

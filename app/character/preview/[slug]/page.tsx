@@ -451,8 +451,14 @@ const LargeWaterfallCard: React.FC<{
                 {/* Personal Description Card - black semi-transparent background */}
                 {data.personalDesc && (
                     <div className="bg-black/60 backdrop-blur-sm rounded-2xl p-3 mb-3">
-                        <div className="flex items-start gap-2">
-                            <p className="text-white text-sm leading-relaxed line-clamp-3">
+                        <div
+                            className="flex items-start gap-2 max-h-[5rem] overflow-y-auto"
+                            style={{
+                                scrollbarWidth: 'thin',
+                                scrollbarColor: 'rgba(255,255,255,0.3) transparent'
+                            }}
+                        >
+                            <p className="text-white text-sm leading-relaxed">
                                 介绍:{data.personalDesc}
                             </p>
                         </div>
@@ -481,9 +487,17 @@ const LargeWaterfallCard: React.FC<{
                             )}
                         </button>
                     )}
-                    <p className="text-gray-800 text-sm leading-relaxed line-clamp-6">
-                        {renderPrefAnswerText(data.prefAnswer || "")}
-                    </p>
+                    <div
+                        className="max-h-[20rem] overflow-y-auto"
+                        style={{
+                            scrollbarWidth: 'thin',
+                            scrollbarColor: 'rgba(156,163,175,0.5) transparent'
+                        }}
+                    >
+                        <p className="text-gray-800 text-sm leading-relaxed">
+                            {renderPrefAnswerText(data.prefAnswer || "")}
+                        </p>
+                    </div>
                 </div>
 
                 {/* Input Area */}

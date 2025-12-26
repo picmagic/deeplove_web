@@ -6,5 +6,8 @@
     "opening": "オープニング",
     "character_desc": "キャラクター説明",
     "behavior_habit": "行動習慣",
-    "open_app_chat": "アプリを開いてチャットする"
+    "open_app_chat": "アプリを開いてチャットする",
+    "explore": "探索",
+    "recommend": "おすすめ",
+    "group_chat": "グループチャット"
 }

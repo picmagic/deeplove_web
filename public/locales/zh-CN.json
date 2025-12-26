@@ -6,5 +6,8 @@
     "opening": "开场白",
     "character_desc": "角色描述",
     "behavior_habit": "行为习惯",
-    "open_app_chat": "打开APP并聊天"
+    "open_app_chat": "打开APP并聊天",
+    "explore": "探索",
+    "recommend": "推荐",
+    "group_chat": "群聊"
 }

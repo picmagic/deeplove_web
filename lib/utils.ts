@@ -48,11 +48,14 @@ const getDeviceId = () => {
 const getDeviceName = () => encodeURIComponent(navigator.userAgent);
 
 
-export const ACCESS_KEY = '6sp5ASLlTO';
+export const ACCESS_KEY = '6svHCeo8VX';
 const accesskey = ACCESS_KEY;
 const buildVersion = '1.0.0';
 
-const getBaseUrl = () => process.env.NEXT_PUBLIC_API_BASE_URL;
+const getBaseUrl = () => {
+  if (typeof window !== 'undefined') return '/api/proxy';
+  return process.env.NEXT_PUBLIC_API_BASE_URL;
+};
 
 export const getCommonParams = () => {
   if (typeof window === 'undefined') {

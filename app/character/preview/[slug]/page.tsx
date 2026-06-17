@@ -20,7 +20,7 @@ const LANGUAGES = [
 type LayoutType = "large" | "small";
 
 // API configuration
-const accesskey = "6sp5ASLlTO";
+const accesskey = "6svHCeo8VX";
 const buildVersion = "1.0.0";
 
 const getDeviceId = () => {
@@ -36,7 +36,10 @@ const getDeviceId = () => {
 const getDeviceName = () =>
     typeof window !== "undefined" ? encodeURIComponent(navigator.userAgent) : "";
 
-const getBaseUrl = () => process.env.NEXT_PUBLIC_API_BASE_URL;
+const getBaseUrl = () => {
+    if (typeof window !== "undefined") return "/api/proxy";
+    return process.env.NEXT_PUBLIC_API_BASE_URL;
+};
 
 // Load locale translations
 const loadLocale = async (lang: string): Promise<Record<string, string>> => {
@@ -695,4 +698,3 @@ const CharacterPreviewPage = () => {
 };
 
 export default CharacterPreviewPage;
-

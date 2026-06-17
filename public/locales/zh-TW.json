@@ -6,8 +6,12 @@
     "opening": "開場白",
     "character_desc": "角色描述",
     "behavior_habit": "行為習慣",
-    "open_app_chat": "打開APP並聊天",
+    "open_app_chat": "立即下載APP並聊天",
     "explore": "探索",
     "recommend": "推薦",
-    "group_chat": "群聊"
+    "group_chat": "群聊",
+    "download_banner": "立即下載APP，體驗完整聊天體驗",
+    "download_now": "立即下載",
+    "unlock_hint": "下載APP查看完整對話",
+    "input_placeholder": "發送訊息..."
 }

@@ -20,7 +20,7 @@ const LANGUAGES = [
 type LayoutType = "large" | "small";
 
 // API configuration
-const accesskey = "6svHCeo8VX";
+const accesskey = "6sp5ASLlTO";
 const buildVersion = "1.0.0";
 
 const getDeviceId = () => {

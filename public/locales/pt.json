@@ -6,5 +6,9 @@
     "opening": "Abertura",
     "character_desc": "Descrição do personagem",
     "behavior_habit": "Hábito de comportamento",
-    "open_app_chat": "Abrir APP e conversar"
+    "open_app_chat": "Abrir app e conversar",
+    "download_banner": "Baixe o app para uma experiência completa de chat",
+    "download_now": "Baixar",
+    "unlock_hint": "Baixe o app para ver a conversa completa",
+    "input_placeholder": "Enviar uma mensagem..."
 }

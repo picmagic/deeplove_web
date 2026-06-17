@@ -9,5 +9,9 @@
     "open_app_chat": "アプリを開いてチャットする",
     "explore": "探索",
     "recommend": "おすすめ",
-    "group_chat": "グループチャット"
+    "group_chat": "グループチャット",
+    "download_banner": "アプリをダウンロードして完全なチャットを体験",
+    "download_now": "今すぐDL",
+    "unlock_hint": "アプリで全会話を見る",
+    "input_placeholder": "メッセージを送る..."
 }

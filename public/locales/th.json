@@ -6,5 +6,9 @@
     "opening": "เปิดเรื่อง",
     "character_desc": "คำอธิบายตัวละคร",
     "behavior_habit": "นิสัยการกระทำ",
-    "open_app_chat": "เปิดแอปและแชท"
+    "open_app_chat": "เปิดแอปและแชท",
+    "download_banner": "ดาวน์โหลดแอปเพื่อประสบการณ์แชทที่สมบูรณ์",
+    "download_now": "ดาวน์โหลด",
+    "unlock_hint": "ดาวน์โหลดแอปเพื่อดูบทสนทนาทั้งหมด",
+    "input_placeholder": "ส่งข้อความ..."
 }

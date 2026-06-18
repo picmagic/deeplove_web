@@ -393,7 +393,7 @@ export default function ChatPage() {
             backgroundPosition: 'center top',
           }}
         >
-          <div className="absolute inset-0" style={{ background: 'linear-gradient(to bottom, rgba(13,8,32,0.55) 0%, rgba(13,8,32,0.82) 50%, rgba(13,8,32,0.97) 100%)' }} />
+          <div className="absolute inset-0" style={{ background: 'linear-gradient(to bottom, rgba(13,8,32,0.3) 0%, rgba(13,8,32,0.55) 50%, rgba(13,8,32,0.85) 100%)' }} />
         </div>
       )}
       {/* 顶部下载横幅 */}
@@ -498,7 +498,7 @@ export default function ChatPage() {
       <div
         className="relative z-10 shrink-0 px-4 pt-3 flex flex-col gap-2"
         style={{
-          background: 'rgba(255,255,255,0.04)',
+          background: 'transparent',
           borderTop: '1px solid rgba(255,255,255,0.06)',
           paddingBottom: 'calc(12px + env(safe-area-inset-bottom))',
         }}

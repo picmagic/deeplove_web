@@ -22,7 +22,7 @@ function buildURL(p0, p1, p2, p3, p4, p5, p6, fbclid, fbpid) {
 
   var roleId = getRoleId();
   if (roleId) {
-    params.deep_link_path = "deeplove://chat?role=" + roleId;
+    params.deep_link = "deeplove://chat?role=" + roleId;
   }
 
   return (

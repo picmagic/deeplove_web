@@ -45,12 +45,23 @@ const getDeviceId = () => {
   return deviceId;
 };
 
-const getDeviceName = () => encodeURIComponent(navigator.userAgent);
+const getDeviceName = () => {
+  const ua = navigator.userAgent;
+  if (/iPhone/.test(ua)) return 'iPhone';
+  if (/iPad/.test(ua)) return 'iPad';
+  if (/Android/.test(ua)) {
+    const m = ua.match(/;\s*([^;)]+)\s*Build\//);
+    return m ? m[1].trim() : 'Android';
+  }
+  if (/Macintosh/.test(ua)) return 'Mac';
+  if (/Windows/.test(ua)) return 'Windows';
+  return 'Web';
+};
 
 
 export const ACCESS_KEY = '6sp5ASLlTO';
 const accesskey = ACCESS_KEY;
-const buildVersion = '1.0.0';
+const buildVersion = '1';
 
 const getBaseUrl = () => {
   if (typeof window !== 'undefined') return '/api/proxy';
@@ -65,6 +76,7 @@ export const getCommonParams = () => {
       deviceId: '',
       lang: 'zh-TW',
       deviceName: '',
+      platform: 'web',
     };
   }
   return {
@@ -73,6 +85,7 @@ export const getCommonParams = () => {
     deviceId: getDeviceId(),
     lang: getLang(),
     deviceName: getDeviceName(),
+    platform: 'web',
   };
 };
 

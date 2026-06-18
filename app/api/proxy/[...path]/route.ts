@@ -90,11 +90,19 @@ async function proxy(request: Request, context: ProxyRouteContext) {
 
   try {
     const upstream = await fetch(targetUrl, init);
+    const responseHeaders = buildResponseHeaders(upstream.headers);
+    const contentType = upstream.headers.get("content-type") ?? "";
+
+    if (contentType.includes("text/event-stream")) {
+      responseHeaders.set("Content-Type", "text/event-stream");
+      responseHeaders.set("Cache-Control", "no-cache, no-transform");
+      responseHeaders.set("X-Accel-Buffering", "no");
+    }
 
     return new Response(upstream.body, {
       status: upstream.status,
       statusText: upstream.statusText,
-      headers: buildResponseHeaders(upstream.headers),
+      headers: responseHeaders,
     });
   } catch (error) {
     console.error("API proxy request failed", error);
@@ -107,6 +115,7 @@ async function proxy(request: Request, context: ProxyRouteContext) {
 }
 
 export const dynamic = "force-dynamic";
+export const maxDuration = 300;
 
 export async function GET(request: Request, context: ProxyRouteContext) {
   return proxy(request, context);

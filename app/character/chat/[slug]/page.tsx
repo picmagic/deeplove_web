@@ -220,6 +220,7 @@ export default function ChatPage() {
   const [descExpanded, setDescExpanded] = useState(false)
   const [suggestions, setSuggestions] = useState<string[]>([])
   const [showDownloadModal, setShowDownloadModal] = useState(false)
+  const [nsfw, setNsfw] = useState(false)
   const bottomRef = useRef<HTMLDivElement>(null)
 
   // tracking timestamps
@@ -551,16 +552,9 @@ export default function ChatPage() {
         </a>
       </div>
 
-      {/* Header */}
-      <div
-        className="relative z-10 flex items-center px-4 py-3 shrink-0"
-        style={{ borderBottom: '1px solid rgba(255,255,255,0.06)' }}
-      >
-        <span className="font-semibold text-base text-white">{data.name}</span>
-      </div>
-
       {/* 聊天区域 */}
       <div className="relative z-10 flex-1 overflow-y-auto px-4 pt-5 pb-4">
+        <span className="block font-semibold text-base text-white mb-4">{data.name}</span>
         {/* personalDesc 简介卡片 */}
         {data.personalDesc && (
           <div
@@ -660,45 +654,68 @@ export default function ChatPage() {
             ))}
           </div>
         )}
-        <div
-          className="flex items-center rounded-full pl-4 pr-1.5 h-12"
-          style={{
-            background: 'transparent',
-            border: '1px solid rgba(255,255,255,0.30)',
-          }}
-        >
-          <input
-            type="text"
-            value={inputValue}
-            onChange={e => setInputValue(e.target.value)}
-            onKeyDown={e => e.key === 'Enter' && handleSend()}
-            disabled={!authReady || sending}
-            placeholder={
-              !authReady
-                ? '初始化中...'
-                : sending
-                  ? '回复中...'
-                  : (t('input_placeholder') || '发送消息...')
-            }
-            className="flex-1 bg-transparent text-sm text-white placeholder-white/40 outline-none"
-          />
-          <button
-            onClick={handleSend}
-            disabled={!canSend}
-            className="w-9 h-9 rounded-full flex items-center justify-center shrink-0 transition-opacity ml-2"
-            style={{
-              background: canSend
-                ? 'linear-gradient(135deg, #a855f7, #7c3aed)'
-                : 'rgba(255,255,255,0.15)',
-              opacity: canSend ? 1 : 0.5,
-            }}
-            aria-label="send"
+        {/* 字符计数 */}
+        <div className="flex justify-end pr-1">
+          <span className="text-xs text-white/50">{inputValue.length}/500</span>
+        </div>
+
+        {/* 输入行 */}
+        <div className="flex items-center gap-2">
+          {/* NSFW 开关 */}
+          <div className="flex flex-col items-center gap-0.5 shrink-0">
+            <button
+              onClick={() => setNsfw(v => !v)}
+              className="relative w-11 h-6 rounded-full transition-colors duration-200"
+              style={{ background: nsfw ? 'rgba(168,85,247,0.8)' : 'rgba(255,255,255,0.25)' }}
+              aria-label="Toggle NSFW"
+            >
+              <span
+                className="absolute top-0.5 w-5 h-5 bg-white rounded-full shadow transition-transform duration-200"
+                style={{ transform: nsfw ? 'translateX(22px)' : 'translateX(2px)' }}
+              />
+            </button>
+            <span className="text-[10px] text-white/60">NSFW</span>
+          </div>
+
+          {/* 输入框 */}
+          <div
+            className="flex-1 flex items-center rounded-2xl pl-4 pr-1.5 h-12"
+            style={{ background: 'rgba(255,255,255,0.18)', backdropFilter: 'blur(8px)' }}
           >
-            <svg width="16" height="16" viewBox="0 0 24 24" fill="none">
-              <path d="M22 2L11 13" stroke="white" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
-              <path d="M22 2L15 22L11 13L2 9L22 2Z" stroke="white" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
-            </svg>
-          </button>
+            <input
+              type="text"
+              value={inputValue}
+              onChange={e => e.target.value.length <= 500 && setInputValue(e.target.value)}
+              onKeyDown={e => e.key === 'Enter' && handleSend()}
+              disabled={!authReady || sending}
+              maxLength={500}
+              placeholder={
+                !authReady
+                  ? '初始化中...'
+                  : sending
+                    ? '回复中...'
+                    : (t('input_placeholder') || '輸入消息...')
+              }
+              className="flex-1 bg-transparent text-sm text-white placeholder-white/50 outline-none"
+            />
+            <button
+              onClick={handleSend}
+              disabled={!canSend}
+              className="w-9 h-9 rounded-full flex items-center justify-center shrink-0 transition-opacity ml-1"
+              style={{
+                background: canSend
+                  ? 'linear-gradient(135deg, #a855f7, #7c3aed)'
+                  : 'rgba(255,255,255,0.15)',
+                opacity: canSend ? 1 : 0.5,
+              }}
+              aria-label="send"
+            >
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none">
+                <path d="M22 2L11 13" stroke="white" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+                <path d="M22 2L15 22L11 13L2 9L22 2Z" stroke="white" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+              </svg>
+            </button>
+          </div>
         </div>
         <a
           href="https://app.adjust.com/21dm2ei9?engagement_type=fallback_click"

@@ -1,7 +1,7 @@
 import type { Metadata, Viewport } from 'next'
 import Script from 'next/script'
+import { DatadogAppRouter } from '@datadog/browser-rum-nextjs'
 import './globals.css'
-import DatadogInit from './datadog-init'
 
 export const viewport: Viewport = {
   width: 'device-width',
@@ -47,7 +47,7 @@ export default function RootLayout({
         </noscript>
       </head>
       <body>
-        <DatadogInit />
+        <DatadogAppRouter />
         {children}
       </body>
     </html>

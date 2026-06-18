@@ -1,6 +1,6 @@
 'use client'
 
-import { useEffect, useRef, useState } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import { useParams } from 'next/navigation'
 import { apiClient, ensureAuth, getToken, getCommonParams, ACCESS_KEY } from '@/lib/utils'
 
@@ -106,6 +106,39 @@ const getMessageChunk = (raw: string, eventType?: string) => {
   }
 }
 
+const renderMessageText = (text: string): React.ReactNode => {
+  const parts: React.ReactNode[] = []
+  let lastIndex = 0
+  const regex = /\*([^*]+)\*/g
+  let match
+
+  while ((match = regex.exec(text)) !== null) {
+    if (match.index > lastIndex) {
+      parts.push(
+        <span key={`t-${lastIndex}`} style={{ color: '#333333' }}>
+          {text.slice(lastIndex, match.index)}
+        </span>
+      )
+    }
+    parts.push(
+      <span key={`a-${match.index}`} style={{ color: '#888888' }}>
+        {match[0]}
+      </span>
+    )
+    lastIndex = match.index + match[0].length
+  }
+
+  if (lastIndex < text.length) {
+    parts.push(
+      <span key={`t-${lastIndex}`} style={{ color: '#333333' }}>
+        {text.slice(lastIndex)}
+      </span>
+    )
+  }
+
+  return parts.length > 0 ? parts : <span style={{ color: '#333333' }}>{text}</span>
+}
+
 const parseStreamEvent = (event: string) => {
   let eventType = ''
   const dataLines: string[] = []
@@ -150,9 +183,7 @@ export default function ChatPage() {
 
   const fetchAutoReply = async (roleId: string) => {
     try {
-      const res = await apiClient.get('/user/virtualRole/autoReply', {
-        params: { roleId },
-      })
+      const res = await apiClient.post('/user/virtualRole/autoReply', { roleId })
       const list: string[] = res.data?.data ?? []
       setSuggestions(list.filter(Boolean).slice(0, 2))
     } catch {
@@ -190,7 +221,7 @@ export default function ChatPage() {
   }, [messages])
 
   const handleDownload = () => {
-    window.location.href = `https://deeplove.onelink.me/prQF?af_xp=social&pid=creator&af_dp=${encodeURIComponent('deeplove://')}&deep_link_value=${encodeURIComponent(`deeplove://role?role=${slug}&source=h5chat`)}`
+    window.location.href = `https://deeplove.onelink.me/prQF?af_xp=social&pid=creator&af_dp=${encodeURIComponent('deeplove://')}&deep_link_value=${encodeURIComponent(`deeplove://chat?role=${slug}&source=h5chat`)}`
     const timer = setTimeout(() => {
       if (!document.hidden) {
         window.location.href = 'https://apps.apple.com/app/id6741785278'
@@ -407,20 +438,26 @@ export default function ChatPage() {
               <div
                 className="max-w-[78%] rounded-2xl rounded-tl-sm px-4 py-3 text-sm leading-relaxed text-white"
                 style={{
-                  background: 'rgba(255,255,255,0.18)',
+                  background: 'rgba(255,255,255,0.8)',
                   backdropFilter: 'blur(10px)',
                   border: '1px solid rgba(255,255,255,0.12)',
                 }}
               >
-                {msg.text || (msg.streaming && (
-                  <span className="inline-flex gap-1 items-center h-4">
-                    <span className="w-1 h-1 bg-white/60 rounded-full animate-bounce" style={{ animationDelay: '0ms' }} />
-                    <span className="w-1 h-1 bg-white/60 rounded-full animate-bounce" style={{ animationDelay: '150ms' }} />
-                    <span className="w-1 h-1 bg-white/60 rounded-full animate-bounce" style={{ animationDelay: '300ms' }} />
-                  </span>
-                ))}
-                {msg.streaming && msg.text && (
-                  <span className="inline-block w-0.5 h-4 bg-white/70 ml-0.5 animate-pulse align-middle" />
+                {msg.text ? (
+                  <>
+                    {renderMessageText(msg.text)}
+                    {msg.streaming && (
+                      <span className="inline-block w-0.5 h-4 bg-white/70 ml-0.5 animate-pulse align-middle" />
+                    )}
+                  </>
+                ) : (
+                  msg.streaming && (
+                    <span className="inline-flex gap-1 items-center h-4">
+                      <span className="w-1 h-1 bg-white/60 rounded-full animate-bounce" style={{ animationDelay: '0ms' }} />
+                      <span className="w-1 h-1 bg-white/60 rounded-full animate-bounce" style={{ animationDelay: '150ms' }} />
+                      <span className="w-1 h-1 bg-white/60 rounded-full animate-bounce" style={{ animationDelay: '300ms' }} />
+                    </span>
+                  )
                 )}
               </div>
             </div>

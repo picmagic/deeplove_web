@@ -48,7 +48,7 @@ const getDeviceId = () => {
 const getDeviceName = () => encodeURIComponent(navigator.userAgent);
 
 
-export const ACCESS_KEY = '6svHCeo8VX';
+export const ACCESS_KEY = '6sp5ASLlTO';
 const accesskey = ACCESS_KEY;
 const buildVersion = '1.0.0';
 

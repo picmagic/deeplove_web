@@ -3,6 +3,7 @@ import React, { useEffect, useState, useCallback } from "react";
 import { useParams } from "next/navigation";
 import axios from "axios";
 import { v4 as uuidv4 } from "uuid";
+import { ACCESS_KEY } from "@/lib/utils";
 
 // Supported languages configuration
 const LANGUAGES = [
@@ -20,7 +21,7 @@ const LANGUAGES = [
 type LayoutType = "large" | "small";
 
 // API configuration
-const accesskey = "6svHCeo8VX";
+const accesskey = ACCESS_KEY;
 const buildVersion = "1.0.0";
 
 const getDeviceId = () => {

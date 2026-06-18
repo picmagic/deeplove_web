@@ -6,5 +6,9 @@
     "opening": "الافتتاحية",
     "character_desc": "وصف الشخصية",
     "behavior_habit": "عادة السلوك",
-    "open_app_chat": "افتح التطبيق وابدأ الدردشة"
+    "open_app_chat": "فتح التطبيق والدردشة",
+    "download_banner": "قم بتنزيل التطبيق لتجربة المحادثة الكاملة",
+    "download_now": "تنزيل",
+    "unlock_hint": "حمّل التطبيق لعرض المحادثة كاملة",
+    "input_placeholder": "أرسل رسالة..."
 }

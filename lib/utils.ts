@@ -47,12 +47,15 @@ const getDeviceId = () => {
 
 const getDeviceName = () => encodeURIComponent(navigator.userAgent);
 
+
+export const ACCESS_KEY = '6sp5ASLlTO';
+const accesskey = ACCESS_KEY;
+const buildVersion = '1.0.0';
+
 const getBaseUrl = () => {
+  if (typeof window !== 'undefined') return '/api/proxy';
   return process.env.NEXT_PUBLIC_API_BASE_URL;
 };
-
-const accesskey = '6svHCeo8VX'; // TODO: 替换为实际 key
-const buildVersion = '1.0.0'; // TODO: 替换为实际版本
 
 export const getCommonParams = () => {
   if (typeof window === 'undefined') {
@@ -79,4 +82,49 @@ export const apiClient = axios.create({
     'Content-Type': 'application/json',
     'YY-Basic-Params': JSON.stringify(getCommonParams()),
   },
+});
+
+const TOKEN_KEY = 'dl_token';
+
+export const getToken = (): string | null => {
+  if (typeof window === 'undefined') return null;
+  return localStorage.getItem(TOKEN_KEY);
+};
+
+const setToken = (token: string) => {
+  localStorage.setItem(TOKEN_KEY, token);
+};
+
+// 设备登录，获取匿名 token
+const deviceLogin = async (): Promise<string> => {
+  const params = getCommonParams();
+  const res = await axios.post(
+    `${getBaseUrl()}/${accesskey}/user/device-Login`,
+    params,
+    {
+      headers: {
+        'Content-Type': 'application/json',
+        'YY-Basic-Params': JSON.stringify(params),
+      },
+    }
+  );
+  const token: string = res.data?.data?.token ?? res.data?.token ?? '';
+  if (token) setToken(token);
+  return token;
+};
+
+// 进入需要鉴权的页面前调用：有 token 直接用，没有则登录
+export const ensureAuth = async (): Promise<string> => {
+  const existing = getToken();
+  if (existing) return existing;
+  return deviceLogin();
+};
+
+// 请求拦截器：自动附带 token
+apiClient.interceptors.request.use((config) => {
+  const token = getToken();
+  if (token) {
+    config.headers['Authorization'] = `Bearer ${token}`;
+  }
+  return config;
 });

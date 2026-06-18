@@ -9,5 +9,9 @@
     "open_app_chat": "Open APP and Chat",
     "explore": "Explore",
     "recommend": "Recommend",
-    "group_chat": "Group Chat"
+    "group_chat": "Group Chat",
+    "download_banner": "Download APP for the full chat experience",
+    "download_now": "Download",
+    "unlock_hint": "Download the app to view the full conversation",
+    "input_placeholder": "Send a message..."
 }

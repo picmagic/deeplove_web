@@ -3,6 +3,7 @@ import React, { useEffect, useState, useCallback } from "react";
 import { useParams } from "next/navigation";
 import axios from "axios";
 import { v4 as uuidv4 } from "uuid";
+import { ACCESS_KEY } from "@/lib/utils";
 
 // Supported languages configuration
 const LANGUAGES = [
@@ -20,7 +21,7 @@ const LANGUAGES = [
 type LayoutType = "large" | "small";
 
 // API configuration
-const accesskey = "6svHCeo8VX";
+const accesskey = ACCESS_KEY;
 const buildVersion = "1.0.0";
 
 const getDeviceId = () => {
@@ -36,7 +37,10 @@ const getDeviceId = () => {
 const getDeviceName = () =>
     typeof window !== "undefined" ? encodeURIComponent(navigator.userAgent) : "";
 
-const getBaseUrl = () => process.env.NEXT_PUBLIC_API_BASE_URL;
+const getBaseUrl = () => {
+    if (typeof window !== "undefined") return "/api/proxy";
+    return process.env.NEXT_PUBLIC_API_BASE_URL;
+};
 
 // Load locale translations
 const loadLocale = async (lang: string): Promise<Record<string, string>> => {
@@ -695,4 +699,3 @@ const CharacterPreviewPage = () => {
 };
 
 export default CharacterPreviewPage;
-

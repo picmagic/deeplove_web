@@ -1,6 +1,13 @@
-import type { Metadata } from 'next'
+import type { Metadata, Viewport } from 'next'
 import Script from 'next/script'
 import './globals.css'
+import DatadogInit from './datadog-init'
+
+export const viewport: Viewport = {
+  width: 'device-width',
+  initialScale: 1,
+  maximumScale: 1,
+}
 
 export const metadata: Metadata = {
   title: 'DeepLove AI',
@@ -38,7 +45,10 @@ export default function RootLayout({
           />
         </noscript>
       </head>
-      <body>{children}</body>
+      <body>
+        <DatadogInit />
+        {children}
+      </body>
     </html>
   )
 }

@@ -724,7 +724,7 @@ export default function ChatPage() {
             </p>
             <a
               href="https://app.adjust.com/21dm2ei9?engagement_type=fallback_click"
-              className="AdjustTracker w-full h-12 rounded-full text-white font-semibold text-base flex items-center justify-center mb-3"
+              className="AdjustTracker w-full h-12 rounded-full text-white font-semibold text-base flex items-center justify-center"
               style={{ background: 'linear-gradient(90deg, #a855f7, #7c3aed)' }}
               onClick={() => track('conversion_cta_click', {
                 role_id: slug,
@@ -735,19 +735,6 @@ export default function ChatPage() {
             >
               繼續和 {data.name} 聊
             </a>
-            <button
-              onClick={() => {
-                track('modal_dismiss', {
-                  role_id: slug,
-                  device_id: localStorage.getItem('deviceId') ?? '',
-                  time_since_modal_show_ms: modalShowTimeRef.current != null ? Date.now() - modalShowTimeRef.current : null,
-                })
-                setShowDownloadModal(false)
-              }}
-              className="text-sm text-gray-400"
-            >
-              下次吧
-            </button>
           </div>
         </div>
       )}

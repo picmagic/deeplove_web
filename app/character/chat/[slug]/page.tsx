@@ -107,36 +107,31 @@ const getMessageChunk = (raw: string, eventType?: string) => {
 }
 
 const renderMessageText = (text: string): React.ReactNode => {
+  text = text.trim().replace(/\n{3,}/g, '\n\n')
   const parts: React.ReactNode[] = []
+  let key = 0
   let lastIndex = 0
   const regex = /\*([^*]+)\*/g
   let match
 
   while ((match = regex.exec(text)) !== null) {
-    if (match.index > lastIndex) {
-      parts.push(
-        <span key={`t-${lastIndex}`} style={{ color: '#333333' }}>
-          {text.slice(lastIndex, match.index)}
-        </span>
-      )
-    }
-    parts.push(
-      <span key={`a-${match.index}`} style={{ color: '#888888' }}>
-        {match[0]}
-      </span>
-    )
+    if (match.index > lastIndex) parts.push(text.slice(lastIndex, match.index))
+    parts.push(<span key={key++} style={{ color: '#888888' }}>{match[0]}</span>)
     lastIndex = match.index + match[0].length
   }
 
-  if (lastIndex < text.length) {
-    parts.push(
-      <span key={`t-${lastIndex}`} style={{ color: '#333333' }}>
-        {text.slice(lastIndex)}
-      </span>
-    )
-  }
+  if (lastIndex < text.length) parts.push(text.slice(lastIndex))
 
-  return parts.length > 0 ? parts : <span style={{ color: '#333333' }}>{text}</span>
+  return parts
+}
+
+const isServerLimitEvent = (event: string): boolean => {
+  let isError = false
+  event.split(/\r?\n/).forEach(line => {
+    if (line.startsWith('event:') && line.slice(6).trim() === 'error') isError = true
+  })
+  if (!isError) return false
+  return event.includes('"fail":true') || event.includes('limit')
 }
 
 const parseStreamEvent = (event: string) => {
@@ -179,7 +174,18 @@ export default function ChatPage() {
   const [sending, setSending] = useState(false)
   const [descExpanded, setDescExpanded] = useState(false)
   const [suggestions, setSuggestions] = useState<string[]>([])
+  const [showDownloadModal, setShowDownloadModal] = useState(false)
   const bottomRef = useRef<HTMLDivElement>(null)
+
+  const CHAT_COUNT_KEY = 'dl_h5_chat_count'
+  const MAX_FREE_CHATS = 5
+
+  const getChatCount = () => parseInt(localStorage.getItem(CHAT_COUNT_KEY) ?? '0', 10)
+  const incrementChatCount = () => {
+    const next = getChatCount() + 1
+    localStorage.setItem(CHAT_COUNT_KEY, String(next))
+    return next
+  }
 
   const fetchAutoReply = async (roleId: string) => {
     try {
@@ -220,24 +226,13 @@ export default function ChatPage() {
     bottomRef.current?.scrollIntoView({ behavior: 'smooth' })
   }, [messages])
 
-  const handleDownload = () => {
-    window.location.href = `https://deeplove.onelink.me/prQF?af_xp=social&pid=creator&af_dp=${encodeURIComponent('deeplove://')}&deep_link_value=${encodeURIComponent(`deeplove://chat?role=${slug}&source=h5chat`)}`
-    const timer = setTimeout(() => {
-      if (!document.hidden) {
-        window.location.href = 'https://apps.apple.com/app/id6741785278'
-      }
-    }, 3000)
-    document.addEventListener('visibilitychange', function handler() {
-      if (document.hidden) {
-        clearTimeout(timer)
-        document.removeEventListener('visibilitychange', handler)
-      }
-    })
-  }
-
-  const handleSend = async () => {
-    const question = inputValue.trim()
+  const sendMessage = async (question: string) => {
     if (!authReady || sending || !question) return
+
+    if (getChatCount() >= MAX_FREE_CHATS) {
+      setShowDownloadModal(true)
+      return
+    }
 
     setInputValue('')
     setSending(true)
@@ -248,6 +243,8 @@ export default function ChatPage() {
 
     // 追加一条空的角色消息，等待流式填充
     setMessages(prev => [...prev, { role: 'character', text: '', streaming: true }])
+
+    let limitReached = false
 
     try {
       const url = new URL(`/api/proxy/${ACCESS_KEY}/user/virtualRole/step-chat`, window.location.origin)
@@ -270,7 +267,7 @@ export default function ChatPage() {
       const decoder = new TextDecoder()
       let buffer = ''
 
-      while (true) {
+      outer: while (true) {
         const { done, value } = await reader.read()
         if (done) break
 
@@ -279,6 +276,10 @@ export default function ChatPage() {
         buffer = events.pop() ?? ''
 
         for (const event of events) {
+          if (isServerLimitEvent(event)) {
+            limitReached = true
+            break outer
+          }
           const chunk = parseStreamEvent(event)
           if (!chunk) continue
 
@@ -293,16 +294,32 @@ export default function ChatPage() {
         }
       }
 
-      const trailingChunk = parseStreamEvent(buffer)
-      if (trailingChunk) {
+      if (!limitReached && isServerLimitEvent(buffer)) limitReached = true
+
+      if (!limitReached) {
+        const trailingChunk = parseStreamEvent(buffer)
+        if (trailingChunk) {
+          setMessages(prev => {
+            const next = [...prev]
+            const last = next[next.length - 1]
+            if (last?.role === 'character') {
+              next[next.length - 1] = { ...last, text: last.text + trailingChunk }
+            }
+            return next
+          })
+        }
+      }
+
+      if (limitReached) {
         setMessages(prev => {
           const next = [...prev]
           const last = next[next.length - 1]
-          if (last?.role === 'character') {
-            next[next.length - 1] = { ...last, text: last.text + trailingChunk }
+          if (last?.role === 'character' && last.streaming) {
+            next.splice(next.length - 1, 1)
           }
           return next
         })
+        setShowDownloadModal(true)
       }
     } catch {
       // 流失败时在最后一条消息填入错误提示
@@ -325,9 +342,17 @@ export default function ChatPage() {
         return next
       })
       setSending(false)
-      fetchAutoReply(slug)
+      if (limitReached) return
+      const count = incrementChatCount()
+      if (count >= MAX_FREE_CHATS) {
+        setShowDownloadModal(true)
+      } else {
+        fetchAutoReply(slug)
+      }
     }
   }
+
+  const handleSend = () => sendMessage(inputValue.trim())
 
   if (loading) {
     return (
@@ -380,13 +405,13 @@ export default function ChatPage() {
           <img src="/logo.svg" alt="logo" className="w-9 h-9 rounded-xl shrink-0" />
           <span className="text-white/80 text-sm leading-snug">立即下载APP，体验完整聊天体验</span>
         </div>
-        <button
-          onClick={handleDownload}
-          className="ml-3 h-11 px-5 rounded-full font-semibold text-sm whitespace-nowrap text-white shrink-0"
+        <a
+          href="https://app.adjust.com/21dm2ei9?engagement_type=fallback_click"
+          className="AdjustTracker ml-3 h-11 px-5 rounded-full font-semibold text-sm whitespace-nowrap text-white shrink-0 flex items-center"
           style={{ background: 'linear-gradient(90deg, #a855f7, #7c3aed)' }}
         >
           {t('download_now') || '立即下载'}
-        </button>
+        </a>
       </div>
 
       {/* Header */}
@@ -403,21 +428,22 @@ export default function ChatPage() {
         {data.personalDesc && (
           <div
             className="mb-5 px-4 py-3 rounded-2xl text-sm leading-relaxed text-white"
-            style={{
-              background: '#333333',
-            }}
+            style={{ background: '#333333' }}
           >
             <p className={descExpanded ? undefined : 'line-clamp-3'}>
               {data.personalDesc}
             </p>
-            {!descExpanded && (
-              <button
-                onClick={() => setDescExpanded(true)}
-                className="mt-1 text-xs text-white/50 transition-colors"
-              >
-                展开
-              </button>
-            )}
+            <button
+              onClick={() => setDescExpanded(v => !v)}
+              className="mt-2 flex items-center justify-center w-full"
+            >
+              <img
+                src="/expand.svg"
+                alt={descExpanded ? '收起' : '展开'}
+                className="w-4 h-4 transition-transform duration-200"
+                style={{ transform: descExpanded ? 'rotate(180deg)' : 'rotate(0deg)' }}
+              />
+            </button>
           </div>
         )}
 
@@ -436,11 +462,13 @@ export default function ChatPage() {
             // 角色消息 - 左侧（无头像、无名字）
             <div key={i} className="flex justify-start mb-4">
               <div
-                className="max-w-[78%] rounded-2xl rounded-tl-sm px-4 py-3 text-sm leading-relaxed text-white"
+                className="max-w-[78%] rounded-2xl rounded-tl-sm px-4 py-3 text-sm leading-snug"
                 style={{
                   background: 'rgba(255,255,255,0.8)',
                   backdropFilter: 'blur(10px)',
                   border: '1px solid rgba(255,255,255,0.12)',
+                  color: '#333333',
+                  whiteSpace: 'pre-wrap',
                 }}
               >
                 {msg.text ? (
@@ -481,10 +509,7 @@ export default function ChatPage() {
             {suggestions.map((s, i) => (
               <button
                 key={i}
-                onClick={() => {
-                  setInputValue(s)
-                  setSuggestions([])
-                }}
+                onClick={() => sendMessage(s)}
                 className="w-full text-left px-4 py-2.5 rounded-2xl text-sm leading-relaxed"
                 style={{
                   background: 'rgba(255,255,255,0.82)',
@@ -538,14 +563,38 @@ export default function ChatPage() {
             </svg>
           </button>
         </div>
-        <button
-          onClick={handleDownload}
-          className="w-full h-11 rounded-full text-white font-bold text-base tracking-normal"
+        <a
+          href="https://app.adjust.com/21dm2ei9?engagement_type=fallback_click"
+          className="AdjustTracker w-full h-11 rounded-full text-white font-bold text-base tracking-normal flex items-center justify-center"
           style={{ background: 'linear-gradient(90deg, #b020f4 0%, #9b22f2 48%, #a020f0 100%)' }}
         >
           更刺激的剧情，在 App 里解锁
-        </button>
+        </a>
       </div>
+
+      {/* 下载引导弹框 */}
+      {showDownloadModal && (
+        <div
+          className="absolute inset-0 z-50 flex items-center justify-center px-6"
+          style={{ background: 'rgba(0,0,0,0.55)', backdropFilter: 'blur(4px)' }}
+        >
+          <div className="w-full bg-white rounded-3xl px-6 py-8 flex flex-col items-center text-center">
+            <h2 className="text-xl font-bold text-gray-900 mb-3">
+              別走得這麼急嗎…
+            </h2>
+            <p className="text-sm text-gray-500 leading-relaxed mb-7">
+              你說的那句話，我還想了好久。打開 App，我們把話接著說完，好嗎？
+            </p>
+            <a
+              href="https://app.adjust.com/21dm2ei9?engagement_type=fallback_click"
+              className="AdjustTracker w-full h-12 rounded-full text-white font-semibold text-base flex items-center justify-center"
+              style={{ background: 'linear-gradient(90deg, #a855f7, #7c3aed)' }}
+            >
+              更刺激的劇情，在 App 裡解鎖
+            </a>
+          </div>
+        </div>
+      )}
     </div>
   )
 }

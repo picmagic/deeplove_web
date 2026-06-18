@@ -246,7 +246,7 @@ export default function ChatPage() {
 
     let limitReached = false
 
-    try {
+    const doFetch = async () => {
       const url = new URL(`/api/proxy/${ACCESS_KEY}/user/virtualRole/step-chat`, window.location.origin)
       url.searchParams.set('chatType', '1')
       url.searchParams.set('question', question)
@@ -321,16 +321,32 @@ export default function ChatPage() {
         })
         setShowDownloadModal(true)
       }
+    }
+
+    try {
+      await doFetch()
     } catch {
-      // 流失败时在最后一条消息填入错误提示
+      // 第一次失败，重置气泡内容后重试一次
       setMessages(prev => {
         const next = [...prev]
         const last = next[next.length - 1]
         if (last?.role === 'character' && last.streaming) {
-          next[next.length - 1] = { ...last, text: '...', streaming: false }
+          next[next.length - 1] = { ...last, text: '' }
         }
         return next
       })
+      try {
+        await doFetch()
+      } catch {
+        setMessages(prev => {
+          const next = [...prev]
+          const last = next[next.length - 1]
+          if (last?.role === 'character' && last.streaming) {
+            next[next.length - 1] = { ...last, text: '...', streaming: false }
+          }
+          return next
+        })
+      }
     } finally {
       // 结束 streaming 状态
       setMessages(prev => {
@@ -480,10 +496,10 @@ export default function ChatPage() {
                   </>
                 ) : (
                   msg.streaming && (
-                    <span className="inline-flex gap-1 items-center h-4">
-                      <span className="w-1 h-1 bg-white/60 rounded-full animate-bounce" style={{ animationDelay: '0ms' }} />
-                      <span className="w-1 h-1 bg-white/60 rounded-full animate-bounce" style={{ animationDelay: '150ms' }} />
-                      <span className="w-1 h-1 bg-white/60 rounded-full animate-bounce" style={{ animationDelay: '300ms' }} />
+                    <span className="inline-flex gap-1.5 items-center h-5">
+                      <span className="w-2 h-2 bg-white rounded-full animate-bounce" style={{ animationDelay: '0ms' }} />
+                      <span className="w-2 h-2 bg-white rounded-full animate-bounce" style={{ animationDelay: '150ms' }} />
+                      <span className="w-2 h-2 bg-white rounded-full animate-bounce" style={{ animationDelay: '300ms' }} />
                     </span>
                   )
                 )}
@@ -580,18 +596,24 @@ export default function ChatPage() {
         >
           <div className="w-full bg-white rounded-3xl px-6 py-8 flex flex-col items-center text-center">
             <h2 className="text-xl font-bold text-gray-900 mb-3">
-              別走得這麼急嗎…
+              別走得這麼急嘛⋯
             </h2>
             <p className="text-sm text-gray-500 leading-relaxed mb-7">
               你說的那句話，我還想了好久。打開 App，我們把話接著說完，好嗎？
             </p>
             <a
               href="https://app.adjust.com/21dm2ei9?engagement_type=fallback_click"
-              className="AdjustTracker w-full h-12 rounded-full text-white font-semibold text-base flex items-center justify-center"
+              className="AdjustTracker w-full h-12 rounded-full text-white font-semibold text-base flex items-center justify-center mb-3"
               style={{ background: 'linear-gradient(90deg, #a855f7, #7c3aed)' }}
             >
-              更刺激的劇情，在 App 裡解鎖
+              繼續和 {data.name} 聊
             </a>
+            <button
+              onClick={() => setShowDownloadModal(false)}
+              className="text-sm text-gray-400"
+            >
+              下次吧
+            </button>
           </div>
         </div>
       )}

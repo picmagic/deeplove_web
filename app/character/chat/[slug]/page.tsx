@@ -2,6 +2,7 @@
 
 import React, { useEffect, useRef, useState } from 'react'
 import { useParams } from 'next/navigation'
+import { datadogRum } from '@datadog/browser-rum'
 import { apiClient, ensureAuth, getToken, getCommonParams, ACCESS_KEY } from '@/lib/utils'
 
 const getLang = () => {
@@ -46,7 +47,51 @@ interface CharacterData {
   occupation?: string
   prefAnswer?: string
   personalDesc?: string
+  category?: string
 }
+
+// ── tracking helpers ──────────────────────────────────────────────────────
+const getDeviceOs = () => {
+  const ua = navigator.userAgent
+  if (/iPhone|iPad|iPod/.test(ua)) return 'ios'
+  if (/Android/.test(ua)) return 'android'
+  return 'other'
+}
+
+const getDeviceOsVersion = () => {
+  const ua = navigator.userAgent
+  const ios = ua.match(/OS (\d+[_\d]+)/)
+  if (ios) return ios[1].replace(/_/g, '.')
+  const android = ua.match(/Android (\d+[.\d]*)/)
+  return android ? android[1] : 'unknown'
+}
+
+const getNetworkType = () => {
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const conn = (navigator as any).connection
+  if (!conn) return 'unknown'
+  const t: string = conn.effectiveType || conn.type || ''
+  if (/wifi/i.test(t)) return 'wifi'
+  if (/5g/i.test(t)) return '5g'
+  if (/4g/i.test(t)) return '4g'
+  return t || 'unknown'
+}
+
+const getLoadTimeMs = () => {
+  try {
+    const nav = performance.getEntriesByType('navigation')[0] as PerformanceNavigationTiming | undefined
+    if (nav) return Math.round(nav.domContentLoadedEventEnd)
+    return Math.round(performance.now())
+  } catch {
+    return 0
+  }
+}
+
+const getUtmParam = (name: string) =>
+  new URLSearchParams(window.location.search).get(name) ?? ''
+
+const track = (name: string, attrs: Record<string, unknown>) =>
+  datadogRum.addAction(name, attrs)
 
 const extractDeltaContent = (payload: unknown): string => {
   if (typeof payload === 'string') return payload
@@ -177,6 +222,13 @@ export default function ChatPage() {
   const [showDownloadModal, setShowDownloadModal] = useState(false)
   const bottomRef = useRef<HTMLDivElement>(null)
 
+  // tracking timestamps
+  const pageViewTimeRef = useRef(Date.now())
+  const firstRenderFiredRef = useRef(false)
+  const lastUserMsgTimeRef = useRef<number | null>(null)
+  const modalShowTimeRef = useRef<number | null>(null)
+  const userMsgCountRef = useRef(0)
+
   const CHAT_COUNT_KEY = 'dl_h5_chat_count'
   const MAX_FREE_CHATS = 5
 
@@ -209,6 +261,26 @@ export default function ChatPage() {
         const role = res.data.data
         setData(role)
 
+        const returningKey = `dl_visited_${slug}`
+        const isReturning = !!localStorage.getItem(returningKey)
+        localStorage.setItem(returningKey, '1')
+
+        track('landing_page_view', {
+          role_id: slug,
+          character_name: role.name ?? '',
+          character_category: role.category ?? '',
+          utm_source: getUtmParam('utm_source'),
+          utm_campaign: getUtmParam('p1') || getUtmParam('utm_campaign'),
+          utm_ad: getUtmParam('p5') || getUtmParam('utm_ad'),
+          device_id: localStorage.getItem('deviceId') ?? '',
+          is_returning: isReturning,
+          device_os: getDeviceOs(),
+          device_os_version: getDeviceOsVersion(),
+          network_type: getNetworkType(),
+          load_time_ms: getLoadTimeMs(),
+          page_url: window.location.href,
+        })
+
         if (role.prefAnswer) {
           setMessages([{ role: 'character', text: role.prefAnswer }])
           fetchAutoReply(slug)
@@ -226,13 +298,56 @@ export default function ChatPage() {
     bottomRef.current?.scrollIntoView({ behavior: 'smooth' })
   }, [messages])
 
-  const sendMessage = async (question: string) => {
+  // chat_first_render — 首条消息渲染完且输入框可交互
+  useEffect(() => {
+    if (firstRenderFiredRef.current) return
+    if (!authReady || !data || messages.length === 0) return
+    firstRenderFiredRef.current = true
+    track('chat_first_render', {
+      role_id: slug,
+      device_id: localStorage.getItem('deviceId') ?? '',
+      render_time_ms: Date.now() - pageViewTimeRef.current,
+    })
+  }, [authReady, data, messages.length, slug])
+
+  // page_leave
+  useEffect(() => {
+    const onLeave = () => {
+      track('page_leave', {
+        role_id: slug,
+        device_id: localStorage.getItem('deviceId') ?? '',
+        messages_sent: userMsgCountRef.current,
+        time_on_page_ms: Date.now() - pageViewTimeRef.current,
+      })
+    }
+    window.addEventListener('pagehide', onLeave)
+    return () => window.removeEventListener('pagehide', onLeave)
+  }, [slug])
+
+  // track modal show time
+  useEffect(() => {
+    if (showDownloadModal) modalShowTimeRef.current = Date.now()
+  }, [showDownloadModal])
+
+  const sendMessage = async (question: string, isQuickReply = false) => {
     if (!authReady || sending || !question) return
 
     if (getChatCount() >= MAX_FREE_CHATS) {
       setShowDownloadModal(true)
       return
     }
+
+    const now = Date.now()
+    userMsgCountRef.current += 1
+    track('message_send', {
+      role_id: slug,
+      device_id: localStorage.getItem('deviceId') ?? '',
+      message_index: userMsgCountRef.current,
+      is_quick_reply: isQuickReply,
+      time_since_prev_msg_ms: lastUserMsgTimeRef.current != null ? now - lastUserMsgTimeRef.current : null,
+      time_since_page_view_ms: now - pageViewTimeRef.current,
+    })
+    lastUserMsgTimeRef.current = now
 
     setInputValue('')
     setSending(true)
@@ -425,6 +540,12 @@ export default function ChatPage() {
           href="https://app.adjust.com/21dm2ei9?engagement_type=fallback_click"
           className="AdjustTracker ml-3 h-11 px-5 rounded-full font-semibold text-sm whitespace-nowrap text-white shrink-0 flex items-center"
           style={{ background: 'linear-gradient(90deg, #a855f7, #7c3aed)' }}
+          onClick={() => track('download_entry_click', {
+            role_id: slug,
+            device_id: localStorage.getItem('deviceId') ?? '',
+            store_target: 'app_store',
+            time_since_page_view_ms: Date.now() - pageViewTimeRef.current,
+          })}
         >
           {t('download_now') || '立即下载'}
         </a>
@@ -443,15 +564,15 @@ export default function ChatPage() {
         {/* personalDesc 简介卡片 */}
         {data.personalDesc && (
           <div
-            className="mb-5 px-4 py-3 rounded-2xl text-sm leading-relaxed text-white"
+            className="mb-5 px-4 py-3 rounded-2xl text-sm leading-relaxed text-white relative"
             style={{ background: '#333333' }}
           >
-            <p className={descExpanded ? undefined : 'line-clamp-3'}>
+            <p className={descExpanded ? 'pr-6' : 'line-clamp-3 pr-6'}>
               {data.personalDesc}
             </p>
             <button
               onClick={() => setDescExpanded(v => !v)}
-              className="mt-2 flex items-center justify-center w-full"
+              className="absolute bottom-3 right-4"
             >
               <img
                 src="/expand.svg"
@@ -525,7 +646,7 @@ export default function ChatPage() {
             {suggestions.map((s, i) => (
               <button
                 key={i}
-                onClick={() => sendMessage(s)}
+                onClick={() => sendMessage(s, true)}
                 className="w-full text-left px-4 py-2.5 rounded-2xl text-sm leading-relaxed"
                 style={{
                   background: 'rgba(255,255,255,0.82)',
@@ -605,11 +726,24 @@ export default function ChatPage() {
               href="https://app.adjust.com/21dm2ei9?engagement_type=fallback_click"
               className="AdjustTracker w-full h-12 rounded-full text-white font-semibold text-base flex items-center justify-center mb-3"
               style={{ background: 'linear-gradient(90deg, #a855f7, #7c3aed)' }}
+              onClick={() => track('conversion_cta_click', {
+                role_id: slug,
+                device_id: localStorage.getItem('deviceId') ?? '',
+                store_target: 'app_store',
+                time_since_modal_show_ms: modalShowTimeRef.current != null ? Date.now() - modalShowTimeRef.current : null,
+              })}
             >
               繼續和 {data.name} 聊
             </a>
             <button
-              onClick={() => setShowDownloadModal(false)}
+              onClick={() => {
+                track('modal_dismiss', {
+                  role_id: slug,
+                  device_id: localStorage.getItem('deviceId') ?? '',
+                  time_since_modal_show_ms: modalShowTimeRef.current != null ? Date.now() - modalShowTimeRef.current : null,
+                })
+                setShowDownloadModal(false)
+              }}
               className="text-sm text-gray-400"
             >
               下次吧

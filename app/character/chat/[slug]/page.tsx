@@ -9,7 +9,7 @@ const getLang = () => {
   if (typeof window === 'undefined') return 'zh-TW'
   const lang = navigator.language || 'zh-TW'
   if (lang.startsWith('zh')) {
-    if (lang.includes('Hant') || lang.includes('TW')) return 'zh-TW'
+    if (lang.includes('Hant') || lang.includes('TW') || lang.includes('HK') || lang.includes('MO')) return 'zh-TW'
     return 'zh-CN'
   }
   return lang.split('-')[0]

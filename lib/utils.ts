@@ -2,8 +2,6 @@
 import { clsx, type ClassValue } from "clsx"
 import { twMerge } from "tailwind-merge"
 import axios from 'axios';
-import { use } from "react";
-import { debug } from "console";
 import { v4 as uuidv4 } from 'uuid';
 
 export function cn(...inputs: ClassValue[]) {
@@ -59,6 +57,8 @@ const getDeviceName = () => {
 };
 
 
+export const generateTraceId = () => uuidv4()
+
 export const ACCESS_KEY = '6sp5ASLlTO';
 const accesskey = ACCESS_KEY;
 const buildVersion = '1';
@@ -110,17 +110,7 @@ const setToken = (token: string) => {
 
 // 设备登录，获取匿名 token
 const deviceLogin = async (): Promise<string> => {
-  const params = getCommonParams();
-  const res = await axios.post(
-    `${getBaseUrl()}/${accesskey}/user/device-Login`,
-    params,
-    {
-      headers: {
-        'Content-Type': 'application/json',
-        'YY-Basic-Params': JSON.stringify(params),
-      },
-    }
-  );
+  const res = await apiClient.post('/user/device-Login', getCommonParams());
   const token: string = res.data?.data?.token ?? res.data?.token ?? '';
   if (token) setToken(token);
   return token;
@@ -139,5 +129,6 @@ apiClient.interceptors.request.use((config) => {
   if (token) {
     config.headers['Authorization'] = `Bearer ${token}`;
   }
+  config.headers['traceId'] = uuidv4();
   return config;
 });

@@ -3,7 +3,7 @@
 import React, { useEffect, useRef, useState } from 'react'
 import { useParams } from 'next/navigation'
 import { datadogRum } from '@datadog/browser-rum'
-import { apiClient, ensureAuth, getToken, getCommonParams, ACCESS_KEY } from '@/lib/utils'
+import { apiClient, ensureAuth, getToken, getCommonParams, ACCESS_KEY, generateTraceId } from '@/lib/utils'
 
 const getLang = () => {
   if (typeof window === 'undefined') return 'zh-TW'
@@ -374,6 +374,7 @@ export default function ChatPage() {
           'Authorization': `Bearer ${getToken() ?? ''}`,
           'YY-Basic-Params': JSON.stringify(getCommonParams()),
           'Accept': 'text/event-stream',
+          'traceId': generateTraceId(),
         },
       })
 

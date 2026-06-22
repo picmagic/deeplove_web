@@ -656,9 +656,9 @@ export default function ChatPage() {
           </div>
         )}
         {/* 字符计数 */}
-        <div className="flex justify-end pr-1">
+        {/* <div className="flex justify-end pr-1">
           <span className="text-xs text-white/50">{inputValue.length}/500</span>
-        </div>
+        </div> */}
 
         {/* 输入行 */}
         <div className="flex items-center gap-2">

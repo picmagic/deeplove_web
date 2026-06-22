@@ -25,9 +25,8 @@ const SUPPORTED_LANGS: Record<string, string> = {
 
 const getLang = () => {
   const lang = navigator.language || 'zh-CN';
-  // 兼容繁体
   if (lang.startsWith('zh')) {
-    if (lang.includes('Hant') || lang.includes('TW')) return 'zh-TW';
+    if (lang.includes('Hant') || lang.includes('TW') || lang.includes('HK') || lang.includes('MO')) return 'zh-TW';
     return 'zh-CN';
   }
   return SUPPORTED_LANGS[lang] || 'en';

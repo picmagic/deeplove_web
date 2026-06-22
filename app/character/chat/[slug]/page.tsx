@@ -535,7 +535,7 @@ export default function ChatPage() {
       >
         <div className="flex items-center gap-2.5 min-w-0">
           <img src="/logo.svg" alt="logo" className="w-9 h-9 rounded-xl shrink-0" />
-          <span className="text-white/80 text-sm leading-snug">立即下载APP，体验完整聊天体验</span>
+          <span className="text-white/80 text-sm leading-snug">{t('download_banner')}</span>
         </div>
         <a
           href="https://app.adjust.com/21dm2ei9?engagement_type=fallback_click"
@@ -548,7 +548,7 @@ export default function ChatPage() {
             time_since_page_view_ms: Date.now() - pageViewTimeRef.current,
           })}
         >
-          {t('download_now') || '立即下载'}
+          {t('download_now')}
         </a>
       </div>
 
@@ -570,7 +570,7 @@ export default function ChatPage() {
             >
               <img
                 src="/expand.svg"
-                alt={descExpanded ? '收起' : '展开'}
+                alt={descExpanded ? t('collapse') : t('expand')}
                 className="w-4 h-4 transition-transform duration-200"
                 style={{ transform: descExpanded ? 'rotate(180deg)' : 'rotate(0deg)' }}
               />
@@ -691,10 +691,10 @@ export default function ChatPage() {
               maxLength={500}
               placeholder={
                 !authReady
-                  ? '初始化中...'
+                  ? t('placeholder_loading')
                   : sending
-                    ? '回复中...'
-                    : (t('input_placeholder') || '輸入消息...')
+                    ? t('placeholder_sending')
+                    : t('input_placeholder')
               }
               className="flex-1 bg-transparent text-sm text-white placeholder-white/50 outline-none"
             />
@@ -722,7 +722,7 @@ export default function ChatPage() {
           className="AdjustTracker w-full h-11 rounded-full text-white font-bold text-base tracking-normal flex items-center justify-center"
           style={{ background: 'linear-gradient(90deg, #b020f4 0%, #9b22f2 48%, #a020f0 100%)' }}
         >
-          更刺激的剧情，在 App 里解锁
+          {t('bottom_cta')}
         </a>
       </div>
 
@@ -734,10 +734,10 @@ export default function ChatPage() {
         >
           <div className="w-full bg-white rounded-3xl px-6 py-8 flex flex-col items-center text-center">
             <h2 className="text-xl font-bold text-gray-900 mb-3">
-              別走得這麼急嘛⋯
+              {t('modal_title')}
             </h2>
             <p className="text-sm text-gray-500 leading-relaxed mb-7">
-              你說的那句話，我還想了好久。打開 App，我們把話接著說完，好嗎？
+              {t('modal_body')}
             </p>
             <a
               href="https://app.adjust.com/21dm2ei9?engagement_type=fallback_click"
@@ -750,7 +750,7 @@ export default function ChatPage() {
                 time_since_modal_show_ms: modalShowTimeRef.current != null ? Date.now() - modalShowTimeRef.current : null,
               })}
             >
-              繼續和 {data.name} 聊
+              {t('modal_cta')}
             </a>
           </div>
         </div>

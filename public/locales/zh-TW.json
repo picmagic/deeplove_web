@@ -13,5 +13,13 @@
     "download_banner": "立即下載APP，體驗完整聊天體驗",
     "download_now": "立即下載",
     "unlock_hint": "下載APP查看完整對話",
-    "input_placeholder": "發送訊息..."
+    "input_placeholder": "發送訊息...",
+    "modal_title": "心跳，才剛開始",
+    "modal_body": "更刺激的劇情，在 App 裡解鎖。",
+    "modal_cta": "繼續沉淪",
+    "placeholder_loading": "初始化中...",
+    "placeholder_sending": "回覆中...",
+    "expand": "展開",
+    "collapse": "收起",
+    "bottom_cta": "更刺激的劇情，在 App 裡解鎖"
 }

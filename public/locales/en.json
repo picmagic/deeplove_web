@@ -13,5 +13,13 @@
     "download_banner": "Download APP for the full chat experience",
     "download_now": "Download",
     "unlock_hint": "Download the app to view the full conversation",
-    "input_placeholder": "Send a message..."
+    "input_placeholder": "Send a message...",
+    "modal_title": "Heart Racing?",
+    "modal_body": "Unlock the spicier story in the app.",
+    "modal_cta": "Keep Going",
+    "placeholder_loading": "Initializing...",
+    "placeholder_sending": "Replying...",
+    "expand": "Expand",
+    "collapse": "Collapse",
+    "bottom_cta": "Unlock the spicier story in the app."
 }

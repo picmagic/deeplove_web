@@ -665,12 +665,12 @@ export default function ChatPage() {
           <div className="flex flex-col items-center gap-0.5 shrink-0">
             <button
               onClick={() => setNsfw(v => !v)}
-              className="relative w-11 h-6 rounded-full transition-colors duration-200"
+              className="relative w-11 h-6 rounded-full overflow-hidden transition-colors duration-200"
               style={{ background: nsfw ? 'rgba(168,85,247,0.8)' : 'rgba(255,255,255,0.25)' }}
               aria-label="Toggle NSFW"
             >
               <span
-                className="absolute top-0.5 w-5 h-5 bg-white rounded-full shadow transition-transform duration-200"
+                className="absolute top-0.5 left-0 w-5 h-5 bg-white rounded-full shadow transition-transform duration-200"
                 style={{ transform: nsfw ? 'translateX(22px)' : 'translateX(2px)' }}
               />
             </button>

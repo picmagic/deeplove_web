@@ -1,0 +1,46 @@
+.container {
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 2rem;
+  line-height: 1.6;
+}
+
+.title {
+  font-size: 2rem;
+  font-weight: bold;
+  text-align: center;
+  margin-bottom: 1rem;
+}
+
+.date {
+  text-align: center;
+  color: #666;
+  margin-bottom: 2rem;
+}
+
+.section {
+  margin-bottom: 2rem;
+}
+
+.section p {
+  margin-bottom: 1rem;
+}
+
+.section a {
+  color: #0070f3;
+  text-decoration: none;
+}
+
+.section a:hover {
+  text-decoration: underline;
+}
+
+.signature {
+  margin-top: 2rem;
+  font-weight: bold;
+}
+
+.highlight {
+  color: #e53e3e;
+  font-weight: bold;
+}

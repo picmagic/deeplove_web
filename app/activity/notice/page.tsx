@@ -12,7 +12,7 @@ export default function ScheduledMaintenanceNotice() {
 
             <section className={styles.section}>
                 <p>
-                    To improve service stability, Deeplove will perform a database migration on{' '}
+                    To improve service stability, Deeplove will undergo a scheduled service upgrade on{' '}
                     <span className={styles.highlight}>August 4, from 06:00 to 11:00 UTC</span>.
                 </p>
                 <p>

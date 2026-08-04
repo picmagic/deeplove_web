@@ -15,6 +15,7 @@ const LANGUAGES = [
     { code: "de", label: "Deutsch" },
     { code: "es", label: "Español" },
     { code: "pt", label: "Português" },
+    { code: "th", label: "ไทย" },
 ];
 
 // Layout types

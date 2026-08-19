@@ -1,5 +1,7 @@
 "use client";
 import { useEffect, useState } from "react";
+import { toast } from "sonner";
+import { Toaster } from "@/components/ui/sonner";
 import { apiClient } from "@/lib/utils";
 
 declare global {
@@ -17,8 +19,15 @@ const CreatorApplyPage = () => {
     const checkApplyStatus = async () => {
         setChecking(true);
         try {
-            const res = await apiClient.get("/user/creaor/apply/check");
-            setUnderReview(res.data?.data === true);
+            const res = await apiClient.post("/user/creator/apply/list", {
+                pageNum: 1,
+                pageSize: 1,
+            });
+            const first = res.data?.data?.list?.[0];
+            setUnderReview(first?.status === "0" || first?.status === 0);
+            if (first?.status === "2" || first?.status === 2) {
+                toast("Account not eligible");
+            }
         } catch {
             // 查詢失敗時不阻擋申請
         } finally {
@@ -45,7 +54,7 @@ const CreatorApplyPage = () => {
         setLoading(true);
         setErrorMsg("");
         try {
-            await apiClient.get("/user/creaor/apply");
+            await apiClient.get("/user/creator/apply");
             setUnderReview(true);
         } catch (e: any) {
             setErrorMsg(e?.message || "請求失敗，請稍後再試");
@@ -60,6 +69,7 @@ const CreatorApplyPage = () => {
 
     return (
         <div className="min-h-screen bg-white flex flex-col px-4 pt-6 pb-28">
+            <Toaster position="top-center" />
             <h1 className="text-2xl font-bold leading-snug mb-2">
                 讓你的創作，被更多人看見
             </h1>
@@ -83,8 +93,8 @@ const CreatorApplyPage = () => {
                     onClick={handleApply}
                     disabled={buttonDisabled}
                     className={`w-11/12 max-w-md h-12 text-base font-bold text-white rounded-full shadow-lg flex items-center justify-center ${underReview
-                            ? "bg-gray-300"
-                            : "bg-purple-600 hover:bg-purple-700 disabled:opacity-70"
+                        ? "bg-gray-300"
+                        : "bg-purple-600 hover:bg-purple-700 disabled:opacity-70"
                         }`}
                 >
                     {buttonText}

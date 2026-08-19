@@ -10,5 +10,6 @@
     "download_banner": "Scarica l'app per un'esperienza di chat completa",
     "download_now": "Scarica",
     "unlock_hint": "Scarica l'app per vedere la conversazione completa",
-    "input_placeholder": "Invia un messaggio..."
+    "input_placeholder": "Invia un messaggio...",
+    "apply_not_eligible": "Account non ammissibile"
 }

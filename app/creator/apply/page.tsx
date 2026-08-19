@@ -4,15 +4,55 @@ import { toast } from "sonner";
 import { Toaster } from "@/components/ui/sonner";
 import { apiClient } from "@/lib/utils";
 
+const getLang = () => {
+    if (typeof window === "undefined") return "zh-TW";
+    const lang = navigator.language || "zh-TW";
+    if (lang.startsWith("zh")) {
+        if (lang.includes("Hant") || lang.includes("TW")) return "zh-TW";
+        return "zh-CN";
+    }
+    return lang.split("-")[0];
+};
+
+const loadLocale = async (lang: string) => {
+    try {
+        const res = await fetch(`/locales/${lang}.json`);
+        if (!res.ok) throw new Error("not found");
+        return await res.json();
+    } catch {
+        const res = await fetch(`/locales/zh-TW.json`);
+        return await res.json();
+    }
+};
+
+const useI18n = () => {
+    const [dict, setDict] = useState<Record<string, string>>({});
+    useEffect(() => {
+        loadLocale(getLang()).then(setDict);
+    }, []);
+    return (key: string) => dict[key] || key;
+};
+
 declare global {
     interface Window {
         setUserInfo?: (data: { userId?: string | number; characterId?: string | number; token?: string }) => void;
     }
 }
 
+const STATUS_PENDING = 0;
+const STATUS_APPROVED = 1;
+const STATUS_REJECTED = 2;
+
+const normalizeStatus = (status: unknown): number | null => {
+    if (status === null || status === undefined) return null;
+    const num = Number(status);
+    return Number.isNaN(num) ? null : num;
+};
+
 const CreatorApplyPage = () => {
+    const t = useI18n();
     const [checking, setChecking] = useState(true);
-    const [underReview, setUnderReview] = useState(false);
+    const [applyStatus, setApplyStatus] = useState<number | null>(null);
     const [loading, setLoading] = useState(false);
     const [errorMsg, setErrorMsg] = useState("");
 
@@ -24,9 +64,10 @@ const CreatorApplyPage = () => {
                 pageSize: 1,
             });
             const first = res.data?.data?.list?.[0];
-            setUnderReview(first?.status === "0" || first?.status === 0);
-            if (first?.status === "2" || first?.status === 2) {
-                toast("Account not eligible");
+            const status = normalizeStatus(first?.status);
+            setApplyStatus(status);
+            if (status === STATUS_REJECTED) {
+                toast(t("apply_not_eligible"));
             }
         } catch {
             // 查詢失敗時不阻擋申請
@@ -49,13 +90,16 @@ const CreatorApplyPage = () => {
         };
     }, []);
 
+    const isPending = applyStatus === STATUS_PENDING;
+    const isApproved = applyStatus === STATUS_APPROVED;
+
     const handleApply = async () => {
-        if (loading || checking || underReview) return;
+        if (loading || checking || isPending || isApproved) return;
         setLoading(true);
         setErrorMsg("");
         try {
             await apiClient.get("/user/creator/apply");
-            setUnderReview(true);
+            setApplyStatus(STATUS_PENDING);
         } catch (e: any) {
             setErrorMsg(e?.message || "請求失敗，請稍後再試");
             setTimeout(() => setErrorMsg(""), 3000);
@@ -64,8 +108,14 @@ const CreatorApplyPage = () => {
         }
     };
 
-    const buttonDisabled = loading || checking || underReview;
-    const buttonText = underReview ? "正在審核" : loading ? "提交中..." : "立即申請";
+    const buttonDisabled = loading || checking || isPending || isApproved;
+    const buttonText = isApproved
+        ? "審核通過"
+        : isPending
+            ? "正在審核"
+            : loading
+                ? "提交中..."
+                : "立即申請";
 
     return (
         <div className="min-h-screen bg-white flex flex-col px-4 pt-6 pb-28">
@@ -92,7 +142,7 @@ const CreatorApplyPage = () => {
                     type="button"
                     onClick={handleApply}
                     disabled={buttonDisabled}
-                    className={`w-11/12 max-w-md h-12 text-base font-bold text-white rounded-full shadow-lg flex items-center justify-center ${underReview
+                    className={`w-11/12 max-w-md h-12 text-base font-bold text-white rounded-full shadow-lg flex items-center justify-center ${isPending || isApproved
                         ? "bg-gray-300"
                         : "bg-purple-600 hover:bg-purple-700 disabled:opacity-70"
                         }`}

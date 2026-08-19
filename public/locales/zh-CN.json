@@ -13,5 +13,6 @@
     "download_banner": "立即下载APP，体验完整聊天体验",
     "download_now": "立即下载",
     "unlock_hint": "下载APP查看完整对话",
-    "input_placeholder": "发送消息..."
+    "input_placeholder": "发送消息...",
+    "apply_not_eligible": "账号资格不符"
 }

@@ -11,5 +11,9 @@
     "download_now": "Télécharger",
     "unlock_hint": "Téléchargez l'app pour voir la conversation complète",
     "input_placeholder": "Envoyer un message...",
-    "apply_not_eligible": "Compte non éligible"
+    "apply_not_eligible": "Compte non éligible",
+    "apply_now": "Postuler maintenant",
+    "apply_submitting": "Envoi en cours...",
+    "apply_pending": "En cours d'examen",
+    "apply_approved": "Approuvé"
 }

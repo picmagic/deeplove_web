@@ -14,5 +14,9 @@
     "download_now": "立即下载",
     "unlock_hint": "下载APP查看完整对话",
     "input_placeholder": "发送消息...",
-    "apply_not_eligible": "账号资格不符"
+    "apply_not_eligible": "账号资格不符",
+    "apply_now": "立即申请",
+    "apply_submitting": "提交中...",
+    "apply_pending": "正在审核",
+    "apply_approved": "审核通过"
 }

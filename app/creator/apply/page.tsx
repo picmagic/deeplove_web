@@ -67,7 +67,7 @@ const CreatorApplyPage = () => {
             const status = normalizeStatus(first?.status);
             setApplyStatus(status);
             if (status === STATUS_REJECTED) {
-                toast(t("apply_not_eligible"));
+                toast(t("apply_not_eligible"), { id: "apply-not-eligible" });
             }
         } catch {
             // 查詢失敗時不阻擋申請
@@ -110,12 +110,12 @@ const CreatorApplyPage = () => {
 
     const buttonDisabled = loading || checking || isPending || isApproved;
     const buttonText = isApproved
-        ? "審核通過"
+        ? t("apply_approved")
         : isPending
-            ? "正在審核"
+            ? t("apply_pending")
             : loading
-                ? "提交中..."
-                : "立即申請";
+                ? t("apply_submitting")
+                : t("apply_now");
 
     return (
         <div className="min-h-screen bg-white flex flex-col px-4 pt-6 pb-28">
@@ -134,6 +134,32 @@ const CreatorApplyPage = () => {
                 </p>
                 <p>創作不只是表達，也是讓熱愛產生價值的開始。</p>
                 <p>現在就開啟你的創作者之旅，把腦海中的世界帶給更多人。</p>
+
+                <div className="font-bold text-gray-900 mt-2">加入創作者，你可以獲得：</div>
+                <ul className="list-disc pl-5 space-y-1">
+                    <li>專屬創作者標識，讓更多用戶認識你的角色與作品</li>
+                    <li>優先曝光機會，熱門內容有機會登上推薦頁</li>
+                    <li>持續發布優質內容，即可獲得平台專屬激勵與成長支持</li>
+                    <li>與官方團隊直接溝通的管道，第一時間獲得活動與功能更新資訊</li>
+                </ul>
+
+                <div className="font-bold text-gray-900 mt-2">申請條件</div>
+                <p>
+                    無論你是資深創作者，還是剛開始嘗試角色設計與劇情創作，只要你對內容創作充滿熱情，都歡迎申請加入。我們鼓勵原創、鼓勵多元風格，也重視每一位創作者背後的用心與堅持。
+                </p>
+
+                <div className="font-bold text-gray-900 mt-2">審核流程</div>
+                <p>
+                    提交申請後，官方團隊將於數個工作日內完成審核，審核結果將透過站內通知告知你，請耐心等候，並持續關注你的帳號通知。
+                </p>
+            </div>
+
+            <div className="mt-6 -mx-4">
+                <img
+                    src="https://d355fm4icfleo1.cloudfront.net/public/6svHCeo8VX/image/5b48434cab6049cd8d81c9c643b58f39.jpeg"
+                    alt="creator apply"
+                    className="w-full h-auto object-cover"
+                />
             </div>
 
             <div className="fixed bottom-0 left-0 w-full bg-white border-t flex flex-col items-center gap-2 py-4 z-10">

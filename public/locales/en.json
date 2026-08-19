@@ -22,5 +22,9 @@
     "expand": "Expand",
     "collapse": "Collapse",
     "bottom_cta": "Unlock the spicier story in the app",
-    "apply_not_eligible": "Account not eligible"
+    "apply_not_eligible": "Account not eligible",
+    "apply_now": "Apply Now",
+    "apply_submitting": "Submitting...",
+    "apply_pending": "Under Review",
+    "apply_approved": "Approved"
 }

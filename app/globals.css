@@ -95,3 +95,12 @@ body {
     @apply bg-background text-foreground;
   }
 }
+
+[data-sonner-toaster][data-x-position="center"] {
+  width: fit-content !important;
+}
+
+[data-sonner-toaster][data-x-position="center"] [data-sonner-toast][data-styled="true"] {
+  width: fit-content !important;
+  min-width: unset !important;
+}

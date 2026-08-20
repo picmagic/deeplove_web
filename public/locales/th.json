@@ -10,5 +10,11 @@
     "download_banner": "ดาวน์โหลดแอปเพื่อประสบการณ์แชทที่สมบูรณ์",
     "download_now": "ดาวน์โหลด",
     "unlock_hint": "ดาวน์โหลดแอปเพื่อดูบทสนทนาทั้งหมด",
-    "input_placeholder": "ส่งข้อความ..."
+    "input_placeholder": "ส่งข้อความ...",
+    "apply_not_eligible": "บัญชีไม่มีสิทธิ์",
+    "apply_now": "สมัครเลย",
+    "apply_submitting": "กำลังส่ง...",
+    "apply_pending": "อยู่ระหว่างการตรวจสอบ",
+    "apply_approved": "ได้รับการอนุมัติ",
+    "apply_checking": "กำลังโหลด..."
 }

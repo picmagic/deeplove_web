@@ -13,5 +13,11 @@
     "download_banner": "アプリをダウンロードして完全なチャットを体験",
     "download_now": "今すぐDL",
     "unlock_hint": "アプリで全会話を見る",
-    "input_placeholder": "メッセージを送る..."
+    "input_placeholder": "メッセージを送る...",
+    "apply_not_eligible": "アカウントは対象外です",
+    "apply_now": "今すぐ申請",
+    "apply_submitting": "送信中...",
+    "apply_pending": "審査中",
+    "apply_approved": "承認済み",
+    "apply_checking": "読み込み中..."
 }

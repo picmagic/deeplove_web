@@ -10,5 +10,11 @@
     "download_banner": "قم بتنزيل التطبيق لتجربة المحادثة الكاملة",
     "download_now": "تنزيل",
     "unlock_hint": "حمّل التطبيق لعرض المحادثة كاملة",
-    "input_placeholder": "أرسل رسالة..."
+    "input_placeholder": "أرسل رسالة...",
+    "apply_not_eligible": "الحساب غير مؤهل",
+    "apply_now": "قدّم الآن",
+    "apply_submitting": "جاري الإرسال...",
+    "apply_pending": "قيد المراجعة",
+    "apply_approved": "تمت الموافقة",
+    "apply_checking": "جاري التحميل..."
 }

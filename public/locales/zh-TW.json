@@ -21,5 +21,11 @@
     "placeholder_sending": "回覆中...",
     "expand": "展開",
     "collapse": "收起",
-    "bottom_cta": "更刺激的劇情，在 App 裡解鎖"
+    "bottom_cta": "更刺激的劇情，在 App 裡解鎖",
+    "apply_not_eligible": "帳號資格不符",
+    "apply_now": "立即申請",
+    "apply_submitting": "提交中...",
+    "apply_pending": "正在審核",
+    "apply_approved": "審核通過",
+    "apply_checking": "載入中..."
 }

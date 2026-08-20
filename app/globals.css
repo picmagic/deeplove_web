@@ -102,5 +102,5 @@ body {
 
 [data-sonner-toaster][data-x-position="center"] [data-sonner-toast][data-styled="true"] {
   width: fit-content !important;
-  min-width: unset !important;
+  white-space: nowrap;
 }

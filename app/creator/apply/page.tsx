@@ -34,7 +34,8 @@ const useI18n = () => {
             setLoaded(true);
         });
     }, []);
-    return (key: string) => (loaded ? dict[key] || key : "");
+    const t = (key: string) => (loaded ? dict[key] || key : "");
+    return { t, loaded };
 };
 
 declare global {
@@ -54,7 +55,7 @@ const normalizeStatus = (status: unknown): number | null => {
 };
 
 const CreatorApplyPage = () => {
-    const t = useI18n();
+    const { t } = useI18n();
     const [checking, setChecking] = useState(true);
     const [applyStatus, setApplyStatus] = useState<number | null>(null);
     const [loading, setLoading] = useState(false);

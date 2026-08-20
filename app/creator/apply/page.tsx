@@ -1,7 +1,5 @@
 "use client";
 import { useEffect, useState } from "react";
-import { toast } from "sonner";
-import { Toaster } from "@/components/ui/sonner";
 import { apiClient } from "@/lib/utils";
 
 const getLang = () => {
@@ -60,6 +58,7 @@ const CreatorApplyPage = () => {
     const [applyStatus, setApplyStatus] = useState<number | null>(null);
     const [loading, setLoading] = useState(false);
     const [errorMsg, setErrorMsg] = useState("");
+    const [notifVisible, setNotifVisible] = useState(false);
 
     const checkApplyStatus = async () => {
         setChecking(true);
@@ -71,7 +70,6 @@ const CreatorApplyPage = () => {
             const first = res.data?.data?.list?.[0];
             const status = normalizeStatus(first?.status);
             setApplyStatus(status);
-            // toast 在下方 useEffect 里等 i18n 加载后触发
         } catch {
             // 查詢失敗時不阻擋申請
         } finally {
@@ -81,7 +79,8 @@ const CreatorApplyPage = () => {
 
     useEffect(() => {
         if (i18nLoaded && applyStatus === STATUS_REJECTED) {
-            toast(t("apply_not_eligible"), { id: "apply-not-eligible" });
+            setNotifVisible(true);
+            setTimeout(() => setNotifVisible(false), 4000);
         }
     }, [i18nLoaded, applyStatus]);
 
@@ -130,7 +129,13 @@ const CreatorApplyPage = () => {
 
     return (
         <div className="min-h-screen bg-white flex flex-col px-4 pt-6 pb-28">
-            <Toaster position="top-center" />
+            {notifVisible && (
+                <div className="fixed top-4 left-0 w-full flex justify-center z-50 pointer-events-none">
+                    <div className="bg-white border border-gray-200 shadow-lg rounded-lg px-4 py-3 text-sm text-gray-800 whitespace-nowrap">
+                        {t("apply_not_eligible")}
+                    </div>
+                </div>
+            )}
             <h1 className="text-2xl font-bold leading-snug mb-2">
                 讓你的創作，被更多人看見
             </h1>

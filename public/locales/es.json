@@ -15,5 +15,6 @@
     "apply_now": "Solicitar ahora",
     "apply_submitting": "Enviando...",
     "apply_pending": "En revisión",
-    "apply_approved": "Aprobado"
+    "apply_approved": "Aprobado",
+    "apply_checking": "Cargando..."
 }

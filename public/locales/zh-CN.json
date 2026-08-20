@@ -18,5 +18,6 @@
     "apply_now": "立即申请",
     "apply_submitting": "提交中...",
     "apply_pending": "正在审核",
-    "apply_approved": "审核通过"
+    "apply_approved": "审核通过",
+    "apply_checking": "加载中..."
 }

@@ -26,5 +26,6 @@
     "apply_now": "Apply Now",
     "apply_submitting": "Submitting...",
     "apply_pending": "Under Review",
-    "apply_approved": "Approved"
+    "apply_approved": "Approved",
+    "apply_checking": "Loading..."
 }

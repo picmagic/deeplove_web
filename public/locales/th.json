@@ -15,5 +15,6 @@
     "apply_now": "สมัครเลย",
     "apply_submitting": "กำลังส่ง...",
     "apply_pending": "อยู่ระหว่างการตรวจสอบ",
-    "apply_approved": "ได้รับการอนุมัติ"
+    "apply_approved": "ได้รับการอนุมัติ",
+    "apply_checking": "กำลังโหลด..."
 }

@@ -15,5 +15,6 @@
     "apply_now": "Postuler maintenant",
     "apply_submitting": "Envoi en cours...",
     "apply_pending": "En cours d'examen",
-    "apply_approved": "Approuvé"
+    "apply_approved": "Approuvé",
+    "apply_checking": "Chargement..."
 }

@@ -27,10 +27,14 @@ const loadLocale = async (lang: string) => {
 
 const useI18n = () => {
     const [dict, setDict] = useState<Record<string, string>>({});
+    const [loaded, setLoaded] = useState(false);
     useEffect(() => {
-        loadLocale(getLang()).then(setDict);
+        loadLocale(getLang()).then((d) => {
+            setDict(d);
+            setLoaded(true);
+        });
     }, []);
-    return (key: string) => dict[key] || key;
+    return (key: string) => (loaded ? dict[key] || key : "");
 };
 
 declare global {
@@ -109,12 +113,14 @@ const CreatorApplyPage = () => {
     };
 
     const buttonDisabled = loading || checking || isPending || isApproved;
-    const buttonText = isApproved
-        ? t("apply_approved")
-        : isPending
-            ? t("apply_pending")
-            : loading
-                ? t("apply_submitting")
+    const buttonText = checking
+        ? t("apply_checking")
+        : loading
+            ? t("apply_submitting")
+            : isApproved
+            ? t("apply_approved")
+            : isPending
+                ? t("apply_pending")
                 : t("apply_now");
 
     return (

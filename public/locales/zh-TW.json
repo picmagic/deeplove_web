@@ -26,5 +26,6 @@
     "apply_now": "立即申請",
     "apply_submitting": "提交中...",
     "apply_pending": "正在審核",
-    "apply_approved": "審核通過"
+    "apply_approved": "審核通過",
+    "apply_checking": "載入中..."
 }

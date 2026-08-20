@@ -130,7 +130,7 @@ const CreatorApplyPage = () => {
 
     return (
         <div className="min-h-screen bg-white flex flex-col px-4 pt-6 pb-28">
-            <Toaster position="top-center" />
+            <Toaster position="top-center" style={{ "--width": "max-content" } as React.CSSProperties} />
             <h1 className="text-2xl font-bold leading-snug mb-2">
                 讓你的創作，被更多人看見
             </h1>

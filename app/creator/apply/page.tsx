@@ -55,7 +55,7 @@ const normalizeStatus = (status: unknown): number | null => {
 };
 
 const CreatorApplyPage = () => {
-    const { t } = useI18n();
+    const { t, loaded: i18nLoaded } = useI18n();
     const [checking, setChecking] = useState(true);
     const [applyStatus, setApplyStatus] = useState<number | null>(null);
     const [loading, setLoading] = useState(false);
@@ -71,15 +71,19 @@ const CreatorApplyPage = () => {
             const first = res.data?.data?.list?.[0];
             const status = normalizeStatus(first?.status);
             setApplyStatus(status);
-            if (status === STATUS_REJECTED) {
-                toast(t("apply_not_eligible"), { id: "apply-not-eligible" });
-            }
+            // toast 在下方 useEffect 里等 i18n 加载后触发
         } catch {
             // 查詢失敗時不阻擋申請
         } finally {
             setChecking(false);
         }
     };
+
+    useEffect(() => {
+        if (i18nLoaded && applyStatus === STATUS_REJECTED) {
+            toast(t("apply_not_eligible"), { id: "apply-not-eligible" });
+        }
+    }, [i18nLoaded, applyStatus]);
 
     useEffect(() => {
         window.setUserInfo = (data) => {

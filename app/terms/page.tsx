@@ -136,14 +136,21 @@ export default function TermsOfUse() {
 			</section>
 
 			<section className={styles.section}>
-				<h2>XVI. SEVERABILITY</h2>
+				<h2>XVI. PROHIBITED CONTENT AND ENFORCEMENT</h2>
+				<p>
+					The platform strictly prohibits adult sexual content, child sexual abuse or exploitation, and violent or otherwise harmful content. Such content is not permitted on Deeplove under any circumstances. We may remove violating content and take appropriate action against accounts that create, upload, share, or promote it.
+				</p>
+			</section>
+
+			<section className={styles.section}>
+				<h2>XVII. SEVERABILITY</h2>
 				<p>
 					If any provision of this Agreement becomes invalid, it shall be modified or removed while maintaining the validity of the remaining terms. You may not transfer your rights under this Agreement to any third party.
 				</p>
 			</section>
 
 			<section className={styles.section}>
-				<h2>XVII. CONTACT INFORMATION</h2>
+				<h2>XVIII. CONTACT INFORMATION</h2>
 				<p>
 					For support or questions about this Agreement, please contact us at:{' '}
 					<a href='mailto:support@deeploveai.net'>support@deeploveai.net</a>

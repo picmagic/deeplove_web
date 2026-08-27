@@ -9,6 +9,15 @@ declare global {
     }
 }
 
+// Pre-register before React mounts to avoid race with Flutter's onLoadStop
+let _pendingUserInfo: { userId?: string | number; characterId?: string | number; token?: string } | null = null;
+if (typeof window !== "undefined") {
+    window.setUserInfo = (data) => {
+        _pendingUserInfo = data;
+        if (data?.token) localStorage.setItem("dl_token", data.token);
+    };
+}
+
 const STATUS_PENDING = 0;
 const STATUS_APPROVED = 1;
 const STATUS_REJECTED = 2;
@@ -113,7 +122,14 @@ const CreatorApplyPage = () => {
                 checkApplyStatus();
             }
         };
-        checkApplyStatus();
+        // Handle any call that arrived before this component mounted
+        if (_pendingUserInfo) {
+            const pending = _pendingUserInfo;
+            _pendingUserInfo = null;
+            if (pending.token) checkApplyStatus();
+        } else {
+            checkApplyStatus();
+        }
         return () => { delete window.setUserInfo; };
     }, []);
 
